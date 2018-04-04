@@ -1,0 +1,73 @@
+;--------------------------------
+; Spawna un veicolo vuoto con il gunner di guardia by Molixx
+; ES. Spawna una tecnica dell' EAST con il gunner di guardia
+; Rev. 1.0 del 26/03/2018
+;--------------------------------
+
+
+;--------------------------------
+; esempio: ["spawn",315, "grpgunner1","tecnica1","RED","AWARE","NERA"] exec "script_REB_spawn_tecnica_guard.sqs";     
+; "spawn"       = nome del marker sulla quane viene spawnata la tecnica
+;  5            = direzione con la quale la tecnica viene spawnata
+; "grpgunner1"  = nome del gruppo del ribelle sulla tecnica
+; "tecnica1"    = nome della tecnica
+; "RED"         = Seleziona la modalità di fuoco dei soldati:"BLUE" = Never fire - "GREEN" = Hold fire - defend only - "WHITE" = Hold fire, engage at will - "YELLOW" = Fire at will - "RED" = Fire at will, engage at will
+; "AWARE"       = Seleziona la modalità di combattimento dei soldati: "CARELESS" - "SAFE" - "AWARE" - "COMBAT" - "STEALTH".
+; "NERA"        = Seleziona il colore della tecnica. Opzioni "NERA" - "BIANCO"
+;--------------------------------
+
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawnpos = _this select 0;
+	_dir = _this select 1;
+	_grpnome = _this select 2;
+	_veicolonome = _this select 3;
+	_combatmode = _this select 4;
+	_behaviour = _this select 5;
+	_colore = _this select 6;
+
+
+;---------------------------------------
+; Creo il veicolo
+;---------------------------------------
+	_veicolonome = "LOP_AFR_OPF_Offroad_M2" createVehicle getmarkerpos _spawnpos,0];
+	_veicolonome setdir _dir;
+
+
+;---------------------------------------
+; coloro il veicolo globalmente (in maniera che in multiplayer vedono tutti lo stesso colore)
+;---------------------------------------
+	if (_colore == "BIANCO") then {
+		_veicolonome setObjectTextureGlobal [0, "#(rgb,8,8,3)color(0.7,0.7,0.7,1)"];
+	};
+	if (_colore == "NERO") then {
+		_veicolonome setObjectTextureGlobal [0, "#(rgb,8,8,3)color(0,0,0,1)"];
+	};
+	
+
+;---------------------------------------
+; Creo il gunner
+;---------------------------------------
+	_grpnome = createGroup EAST;  
+	_gunner = _grpnome createUnit ["LOP_AFR_OPF_Infantry_Corpsman",getmarkerpos _spawnpos,[],0,"NONE"]; 
+	_gunner moveingunner _veicolonome; 
+	_gunner setskill ["aimingAccuracy",0.65];
+	_gunner setskill ["aimingShake",1];
+	_gunner setskill ["aimingSpeed",1]; 
+	_gunner setskill ["endurance",1];
+	_gunner setskill ["spotDistance",1];
+	_gunner setskill ["spotTime",1];
+	_gunner setskill ["courage",1];
+	_gunner setskill ["reloadSpeed",1];
+	_gunner setskill ["commanding",1];
+	_gunner setcombatmode _combatmode;
+	_gunner setBehaviour _behaviour;
+
+
+;---------------------------------------
+; Chiudo lo script
+;---------------------------------------
+exit
+

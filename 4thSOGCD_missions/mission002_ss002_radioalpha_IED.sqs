@@ -1,0 +1,36 @@
+;-----------------------------------------------
+;mission002_ss002_radioalpha_ied.sqs
+;Verifica ogni x secondi che Bluefor sia su un trigger del comando IED 
+;serve a dichiarare di aver ritrovato l'IED
+;-----------------------------------------------
+;Imposto l'IED non esploso
+esplosioneIED002 = 0;
+;Imposto il radio Comando IED disattivato
+radioalphacomIEDattivato002 = 0;
+
+#aggiungiradio
+triggerRadioAlpha002 = createTrigger ["EmptyDetector", [0, 0, 0]];
+triggerRadioAlpha002 setTriggerActivation ["ALPHA", "PRESENT", true];
+
+
+#checkradio
+if ((triggerActivated triggerRadioAlpha002) && (triggerActivated radio002_IEDComando)) then {radioalphacomIEDattivato002 = 1; goto "endscript"};
+if ((triggerActivated triggerRadioAlpha002) && !(triggerActivated radio002_IEDComando)) then {radioalphacomIEDattivato002 = 0; goto "aggiungiradio"};
+;se l'IED è esploso, termina script
+if (esplosioneIED002== 1) then {goto "endscript"};
+;**************** impostare anche se la missione è finita, esci da questo script
+;**************** impostare anche se la missione è finita, esci da questo script
+;**************** impostare anche se la missione è finita, esci da questo script
+;**************** impostare anche se la missione è finita, esci da questo script
+
+~1
+goto "checkradio";
+
+#endscript
+	variabile_parlato = 17;
+	publicVariable "variabile_parlato";
+	[west, "Base"] sideChat "Bene squadra avete ritrovato il controllo remoto dell'IED. Assicuratevi che l'operatore sia morto e che non abbia con se altri dispositivi di comando.";
+	["task_distruggiIED", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+exit
+
+

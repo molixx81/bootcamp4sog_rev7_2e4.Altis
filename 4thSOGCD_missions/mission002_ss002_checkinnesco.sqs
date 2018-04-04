@@ -1,0 +1,14 @@
+;-----------------------------------------------
+;mission002_ss002_checkinnesco.sqs
+;controlla se il tipo con in mano l'innesco è vivo o morto
+;-----------------------------------------------
+
+;se il tipo (rebdetonatore_002) è vivo allora il detonatore è attivo detonatoreattivo = 1;
+detonatoreattivo = 1;
+#loop
+if !(alive rebdetonatore_002) then {detonatoreattivo = 0; goto "endscript"};
+~1
+goto "loop";
+
+#endscript
+exit

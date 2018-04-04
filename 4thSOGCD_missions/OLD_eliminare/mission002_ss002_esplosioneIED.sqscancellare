@@ -1,0 +1,11 @@
+;-----------------------------------------------
+;mission002_ss002_esplosioneIED.sqs 
+;esplodi IED
+;-----------------------------------------------
+
+#start
+bomb = "Rocket_04_HE_F" createVehicle getpos bomba;  
+;*** altra bomba APERSTripMine_Wire_Ammo
+bomb setdamage 1;
+goto "start";
+exit

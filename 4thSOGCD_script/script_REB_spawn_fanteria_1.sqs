@@ -1,0 +1,342 @@
+;--------------------------------
+; Spawna fino a 12 unità di fanteria di ribelli AI by Molixx
+; Ordina alle unità di seguire 5 Marker (4 di direzione 1 di waypoint ciclico)
+; Rev. 3.0 del 03/04/2018
+;--------------------------------
+
+
+;--------------------------------
+; esempio: ["spawn002",5,"_grpreb_1","WP_1","WP_2","WP_3","WP_4","WP_5","COLUMN","RED","AWARE"] exec "script_REB_spawn_fanteria.sqs";     
+; "spawn002" = nome del marker sulla quane viene spawnato il gruppo di unità (mettere il nome del marker tra virgolette)
+;  5         = n° unità del gruppo da spawnare (minimo 1 - massimo 12)
+; "RIB"      = ribelli ("RIB") o Russi ("RUS")
+; _grpreb_1  = nome del gruppo di ribelli (in questo caso fanno parte dell' EAST)
+; "WP_1"     = nome del marker sulla mappa corrispondente al 1° waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_2"     = nome del marker sulla mappa corrispondente al 2° waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_3"     = nome del marker sulla mappa corrispondente al 3° waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_4"     = nome del marker sulla mappa corrispondente al 4° waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_5"     = nome del marker sulla mappa corrispondente al 5° waypoint. Ricordatevi di metterlo tra virgolette
+; "COLUMN"   = formazione del gruppo da scegliere tra "COLUMN" - "STAG COLUMN" - "WEDGE" - "ECH LEFT" - "ECH RIGHT" - "VEE" - "LINE" - "FILE" (ArmA) - "DIAMOND" (ArmA)
+; "RED"      = Seleziona la modalità di fuoco dei soldati:"BLUE" = Never fire - "GREEN" = Hold fire - defend only - "WHITE" = Hold fire, engage at will - "YELLOW" = Fire at will - "RED" = Fire at will, engage at will
+; "AWARE"    = Seleziona la modalità di combattimento dei soldati: "CARELESS" - "SAFE" - "AWARE" - "COMBAT" - "STEALTH".
+;--------------------------------
+
+
+;---------------------------------------
+; Imposto la variabile che mi consente di eliminare successivamente il gruppo (creare variabili diverse e quindi script diversi se l'eliminazione dei gruppi che hanno utilizzato questo script non deve essere in contemporanea)
+;---------------------------------------
+Grpfant_1 = 0;
+
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawnpos = _this select 0;
+	_nunita = _this select 1;
+	_RIBoRUS = _this select 2;
+	_grp = _this select 3;
+	_WP1 = _this select 4;
+	_WP2 = _this select 5;
+	_WP3 = _this select 6;
+	_WP4 = _this select 7;
+	_WP5 = _this select 8;
+	_formation = _this select 9;
+	_combatmode = _this select 10;
+	_behaviour = _this select 11;
+
+
+;---------------------------------------
+; Imposto le classi negli slots delle unità che voglio spawnare a seconda se ho scelto ribelli o russi (_RIBoRUS)
+;---------------------------------------
+	if (_RIBoRUS == "RUS") then {goto "slotRUS"};
+; altrimenti sono ribelli e procedi come sotto
+	_slot1 = "LOP_BH_Infantry_Rifleman";
+	_slot2 = "LOP_BH_Infantry_AR_Asst";
+	_slot3 = "LOP_BH_Infantry_AT";
+	_slot4 = "LOP_BH_Infantry_AR";
+	_slot5 = "LOP_BH_Infantry_Corpsman";
+	_slot6 = "LOP_BH_Infantry_Rifleman";
+	_slot7 = "LOP_BH_Infantry_AR_Asst";
+	_slot8 = "LOP_BH_Infantry_AT";
+	_slot9 = "LOP_BH_Infantry_AR";
+	_slot10 = "LOP_BH_Infantry_Rifleman";
+	_slot11 = "LOP_BH_Infantry_Corpsman";
+	_slot12 = "LOP_BH_Infantry_AR";
+	goto "creoleunita";
+#slotRUS
+	_slot1 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot2 = "rhs_vdv_mflora_machinegunner";
+	_slot3 = "rhs_vdv_mflora_grenadier_rpg";
+	_slot4 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot5 = "rhs_vdv_mflora_medic";
+	_slot6 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot7 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot8 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot9 = "rhs_vdv_mflora_machinegunner";
+	_slot10 = "rhs_vdv_mflora_grenadier_rpg";
+	_slot11 = "rhs_vdv_mflora_grenadier";
+	_slot12 = "rhs_vdv_mflora_marksman";
+
+
+;---------------------------------------
+; Creo le unità
+;---------------------------------------	
+#creoleunita
+	_grp = createGroup EAST;   
+
+	_rebgunner_001 = _grp createUnit [_slot1,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	if (_nunita==1) then {goto "formazione"};
+
+	_rebgunner_002 = _grp createUnit [_slot2,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_002] join _rebgunner_001;
+	if (_nunita==2) then {goto "formazione"};
+
+	_rebgunner_003 = _grp createUnit [_slot3,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_003] join _rebgunner_001;
+	if (_nunita==3) then {goto "formazione"};
+
+	_rebgunner_004 = _grp createUnit [_slot4,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_004] join _rebgunner_001;
+	if (_nunita==4) then {goto "formazione"};
+
+	_rebgunner_005 = _grp createUnit [_slot5,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_005] join _rebgunner_001;
+	if (_nunita==5) then {goto "formazione"};
+
+	_rebgunner_006 = _grp createUnit [_slot6,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_006] join _rebgunner_001;
+	if (_nunita==6) then {goto "formazione"};
+
+	_rebgunner_007 = _grp createUnit [_slot7,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_007] join _rebgunner_001;
+	if (_nunita==7) then {goto "formazione"};
+
+	_rebgunner_008 = _grp createUnit [_slot8,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_008] join _rebgunner_001;
+	if (_nunita==8) then {goto "formazione"};
+
+	_rebgunner_009 = _grp createUnit [_slot9,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_009] join _rebgunner_001;
+	if (_nunita==9) then {goto "formazione"};
+
+	_rebgunner_010 = _grp createUnit [_slot10,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_010] join _rebgunner_001;
+	if (_nunita==10) then {goto "formazione"};
+
+	_rebgunner_011 = _grp createUnit [_slot11,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_011] join _rebgunner_001;
+	if (_nunita==11) then {goto "formazione"};
+
+	_rebgunner_012 = _grp createUnit [_slot12,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rebgunner_012] join _rebgunner_001;
+
+
+#formazione
+;---------------------------------------
+; setto la formazione del gruppo
+;---------------------------------------
+_grp setFormation _formation;
+
+
+#impostaskill
+;---------------------------------------
+; setto le skill per le AI spawnate
+;---------------------------------------
+_rebgunner_001 setskill ["aimingAccuracy",0.65];
+_rebgunner_001 setskill ["aimingShake",1];
+_rebgunner_001 setskill ["aimingSpeed",1]; 
+_rebgunner_001 setskill ["endurance",1];
+_rebgunner_001 setskill ["spotDistance",1];
+_rebgunner_001 setskill ["spotTime",1];
+_rebgunner_001 setskill ["courage",1];
+_rebgunner_001 setskill ["reloadSpeed",1];
+_rebgunner_001 setskill ["commanding",1];
+_rebgunner_001 setcombatmode _combatmode;
+_rebgunner_001 setBehaviour _behaviour;
+	if (_nunita==1) then {goto "waypoint"};
+
+_rebgunner_002 setskill ["aimingAccuracy",0.65];
+_rebgunner_002 setskill ["aimingShake",1];
+_rebgunner_002 setskill ["aimingSpeed",1]; 
+_rebgunner_002 setskill ["endurance",1];
+_rebgunner_002 setskill ["spotDistance",1];
+_rebgunner_002 setskill ["spotTime",1];
+_rebgunner_002 setskill ["courage",1];
+_rebgunner_002 setskill ["reloadSpeed",1];
+_rebgunner_002 setskill ["commanding",1];
+_rebgunner_002 setcombatmode _combatmode;
+_rebgunner_002 setBehaviour _behaviour;
+	if (_nunita==2) then {goto "waypoint"};
+
+_rebgunner_003 setskill ["aimingAccuracy",0.65];
+_rebgunner_003 setskill ["aimingShake",1];
+_rebgunner_003 setskill ["aimingSpeed",1]; 
+_rebgunner_003 setskill ["endurance",1];
+_rebgunner_003 setskill ["spotDistance",1];
+_rebgunner_003 setskill ["spotTime",1];
+_rebgunner_003 setskill ["courage",1];
+_rebgunner_003 setskill ["reloadSpeed",1];
+_rebgunner_003 setskill ["commanding",1];
+_rebgunner_003 setcombatmode _combatmode;
+_rebgunner_003 setBehaviour _behaviour;
+	if (_nunita==3) then {goto "waypoint"};
+
+_rebgunner_004 setskill ["aimingAccuracy",0.65];
+_rebgunner_004 setskill ["aimingShake",1];
+_rebgunner_004 setskill ["aimingSpeed",1]; 
+_rebgunner_004 setskill ["endurance",1];
+_rebgunner_004 setskill ["spotDistance",1];
+_rebgunner_004 setskill ["spotTime",1];
+_rebgunner_004 setskill ["courage",1];
+_rebgunner_004 setskill ["reloadSpeed",1];
+_rebgunner_004 setskill ["commanding",1];
+_rebgunner_004 setcombatmode _combatmode;
+_rebgunner_004 setBehaviour _behaviour;
+	if (_nunita==4) then {goto "waypoint"};
+
+_rebgunner_005 setskill ["aimingAccuracy",0.65];
+_rebgunner_005 setskill ["aimingShake",1];
+_rebgunner_005 setskill ["aimingSpeed",1]; 
+_rebgunner_005 setskill ["endurance",1];
+_rebgunner_005 setskill ["spotDistance",1];
+_rebgunner_005 setskill ["spotTime",1];
+_rebgunner_005 setskill ["courage",1];
+_rebgunner_005 setskill ["reloadSpeed",1];
+_rebgunner_005 setskill ["commanding",1];
+_rebgunner_005 setcombatmode _combatmode;
+_rebgunner_005 setBehaviour _behaviour;
+	if (_nunita==5) then {goto "waypoint"};
+
+_rebgunner_006 setskill ["aimingAccuracy",0.65];
+_rebgunner_006 setskill ["aimingShake",1];
+_rebgunner_006 setskill ["aimingSpeed",1]; 
+_rebgunner_006 setskill ["endurance",1];
+_rebgunner_006 setskill ["spotDistance",1];
+_rebgunner_006 setskill ["spotTime",1];
+_rebgunner_006 setskill ["courage",1];
+_rebgunner_006 setskill ["reloadSpeed",1];
+_rebgunner_006 setskill ["commanding",1];
+_rebgunner_006 setcombatmode _combatmode;
+_rebgunner_006 setBehaviour _behaviour;
+	if (_nunita==6) then {goto "waypoint"};
+
+_rebgunner_007 setskill ["aimingAccuracy",0.65];
+_rebgunner_007 setskill ["aimingShake",1];
+_rebgunner_007 setskill ["aimingSpeed",1]; 
+_rebgunner_007 setskill ["endurance",1];
+_rebgunner_007 setskill ["spotDistance",1];
+_rebgunner_007 setskill ["spotTime",1];
+_rebgunner_007 setskill ["courage",1];
+_rebgunner_007 setskill ["reloadSpeed",1];
+_rebgunner_007 setskill ["commanding",1];
+_rebgunner_007 setcombatmode _combatmode;
+_rebgunner_007 setBehaviour _behaviour;
+	if (_nunita==7) then {goto "waypoint"};
+
+_rebgunner_008 setskill ["aimingAccuracy",0.65];
+_rebgunner_008 setskill ["aimingShake",1];
+_rebgunner_008 setskill ["aimingSpeed",1]; 
+_rebgunner_008 setskill ["endurance",1];
+_rebgunner_008 setskill ["spotDistance",1];
+_rebgunner_008 setskill ["spotTime",1];
+_rebgunner_008 setskill ["courage",1];
+_rebgunner_008 setskill ["reloadSpeed",1];
+_rebgunner_008 setskill ["commanding",1];
+_rebgunner_008 setcombatmode _combatmode;
+_rebgunner_008 setBehaviour _behaviour;
+	if (_nunita==8) then {goto "waypoint"};
+
+_rebgunner_009 setskill ["aimingAccuracy",0.65];
+_rebgunner_009 setskill ["aimingShake",1];
+_rebgunner_009 setskill ["aimingSpeed",1]; 
+_rebgunner_009 setskill ["endurance",1];
+_rebgunner_009 setskill ["spotDistance",1];
+_rebgunner_009 setskill ["spotTime",1];
+_rebgunner_009 setskill ["courage",1];
+_rebgunner_009 setskill ["reloadSpeed",1];
+_rebgunner_009 setskill ["commanding",1];
+_rebgunner_009 setcombatmode _combatmode;
+_rebgunner_009 setBehaviour _behaviour;
+	if (_nunita==9) then {goto "waypoint"};
+
+_rebgunner_010 setskill ["aimingAccuracy",0.65];
+_rebgunner_010 setskill ["aimingShake",1];
+_rebgunner_010 setskill ["aimingSpeed",1]; 
+_rebgunner_010 setskill ["endurance",1];
+_rebgunner_010 setskill ["spotDistance",1];
+_rebgunner_010 setskill ["spotTime",1];
+_rebgunner_010 setskill ["courage",1];
+_rebgunner_010 setskill ["reloadSpeed",1];
+_rebgunner_010 setskill ["commanding",1];
+_rebgunner_010 setcombatmode _combatmode;
+_rebgunner_010 setBehaviour _behaviour;
+	if (_nunita==10) then {goto "waypoint"};
+
+_rebgunner_011 setskill ["aimingAccuracy",0.65];
+_rebgunner_011 setskill ["aimingShake",1];
+_rebgunner_011 setskill ["aimingSpeed",1]; 
+_rebgunner_011 setskill ["endurance",1];
+_rebgunner_011 setskill ["spotDistance",1];
+_rebgunner_011 setskill ["spotTime",1];
+_rebgunner_011 setskill ["courage",1];
+_rebgunner_011 setskill ["reloadSpeed",1];
+_rebgunner_011 setskill ["commanding",1];
+_rebgunner_011 setcombatmode _combatmode;
+_rebgunner_011 setBehaviour _behaviour;
+	if (_nunita==11) then {goto "waypoint"};
+
+_rebgunner_012 setskill ["aimingAccuracy",0.65];
+_rebgunner_012 setskill ["aimingShake",1];
+_rebgunner_012 setskill ["aimingSpeed",1]; 
+_rebgunner_012 setskill ["endurance",1];
+_rebgunner_012 setskill ["spotDistance",1];
+_rebgunner_012 setskill ["spotTime",1];
+_rebgunner_012 setskill ["courage",1];
+_rebgunner_012 setskill ["reloadSpeed",1];
+_rebgunner_012 setskill ["commanding",1];
+_rebgunner_012 setcombatmode _combatmode;
+_rebgunner_012 setBehaviour _behaviour;
+	if (_nunita==12) then {goto "waypoint"};
+
+
+#waypoint
+;---------------------------------------
+;imposto i waypoint del gruppo
+;---------------------------------------
+_waypoint1 = _grp addWaypoint [getmarkerpos _WP1, 0];
+_waypoint1 setWaypointType "MOVE";
+;_waypoint1 setWaypointSpeed "LIMITED";
+;_waypoint setWaypointBehaviour "SAFE";
+;_waypoint setWaypointType "FOLLOW";
+
+_waypoint2 = _grp addWaypoint [getmarkerpos _WP2, 0];
+_waypoint2 setWaypointType "MOVE";
+;_waypoint2 setWaypointSpeed "LIMITED";
+
+_waypoint3 = _grp addWaypoint [getmarkerpos _WP3, 0];
+_waypoint3 setWaypointType "MOVE";
+;_waypoint3 setWaypointSpeed "LIMITED";
+
+_waypoint4 = _grp addWaypoint [getmarkerpos _WP4, 0];
+_waypoint4 setWaypointType "MOVE";
+;_waypoint4 setWaypointSpeed "LIMITED";
+;_waypoint4 setWaypointStatements ["true", "hint 'cicla'"];
+
+_waypoint5 = _grp addWaypoint [getmarkerpos _WP5, 0];
+_waypoint5 setWaypointType "CYCLE";
+
+
+#eliminazione
+;---------------------------------------
+; rimango in attesa della variabile per l'eliminazione delle unità (Grpfant_1 = 1)
+;---------------------------------------
+if (Grpfant_1 == 1) then {{ deleteVehicle _x }forEach units _grp; goto "exit"};
+~5
+goto "eliminazione";
+
+
+#exit
+;---------------------------------------
+;termina lo script
+;---------------------------------------
+exit

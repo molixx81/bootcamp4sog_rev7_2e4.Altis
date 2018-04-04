@@ -1,0 +1,39 @@
+;distruggere l'antenna ed eliminare l'area (missione test)
+
+;creo il marker della missione 
+_marker = createMarker ["elimina", getpos missione003];
+_marker setMarkerShape "ELLIPSE";
+_marker setMarkerSize [75, 75];
+_marker setMarkerColor "ColorEAST";
+
+;creo l'antenna da distruggere
+_antennaobiettivo = "B_G_Offroad_01_repair_F" createVehicle getMarkerPos _marker;
+
+;creo il task della missione sul trigger
+[west,["task_antenna_003"],["Distruggi l'antenna e ripulisci la zona","Distruggi","cookiemarker"],getMarkerPos _marker,1,2,true] call BIS_fnc_taskCreate
+
+;Creo un loop per verificare che l'antenna sia distrutta e l'area sgombra. se si vai a complete altrimenti torna al loop
+#verifica
+
+if (!(alive _antennaobiettivo) && !(triggerActivated missione003)) then {goto "completato"};
+
+;aspetto 10 secondi onde evitare loop
+~10
+
+;torno al loop verifica
+goto "verifica";
+
+#completato
+
+["task_antenna_003", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+
+;aspetto x secondi prima di rimuovere tutto quello che ho creato (tempo da prolungare) per alleggerire il server
+~30
+deleteVehicle _antennaobiettivo;
+deleteMarker _marker;
+
+;setto la variabile MissioneInCorso = 0 cosi lo script di inizializzazione.sqs capisce la missione è conclusa
+MissioneInCorso = 0;
+
+;chiudo lo script
+exit

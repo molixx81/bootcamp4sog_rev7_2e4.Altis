@@ -1,0 +1,29 @@
+;-----------------------------------------------
+;missione mission002_ss001_esplosioneIED.sqs
+;Verifica ogni x secondi che Bluefor sia sopra trigger_002_13 = IED 
+;-----------------------------------------------
+
+;imposto la variabile 002esplosioneIED=false. Se false l' IED non è saltato in aria comandato dall'EAST ************************* vedere bene questo punto
+esplosioneIED002=0;
+;variabile che indica hce la persona con il detonatore è viva
+detonatoreattivo= 1;
+
+;Inizio il loop per verificare che il trigger (e IED) sia attivato. una volta attivato E SOLO SE LA PERSONA A CUI e' COLLEGATO L' IED è VIVA -> esegui esplosione e vai al loop termina script
+#inizioloopIED
+
+;se il trigger è attivato e la persona è viva (detonatoreattivo= 1), fai esplodere IED
+if (triggerActivated trigger_002_13 && detonatoreattivo== 1) then {[] exec "4thSOGCD_missions\mission002_ss002_innescaIED.sqs"; goto "endscriptfail"};
+
+;se la bomba non esplode perchè nessuno l ha considerata, chiudi lo script quando la missione è completata ossia "missioneincorso=0"
+if (MissioneInCorso == 0) then {goto "endscript"};
+~1
+goto "inizioloopIED";
+
+#endscript
+exit
+
+; fine script in caso di fallimento (ied esploso comandato dall'EAST)
+
+#endscriptfail
+esplosioneIED002=1;
+exit

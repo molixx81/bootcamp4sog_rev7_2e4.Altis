@@ -1,0 +1,26 @@
+;-----------------------------------------------
+;mission002_ss002_iniziomarcia.sqs
+;Verifica che il veicolo cargo non si trova nel trigger trigger002_cargoaway e inizia a far parlare la base
+;-----------------------------------------------
+
+
+;Setto a 0 la variabile che arriva dall'editor, dal trigger trigger002_cargoaway
+hemttaway = 0;
+
+;Inizio il loop per verificare che il veicolo cargo non si trova più nel luogo di spawn
+#cargoaway
+
+;verifico se HEMTT è uscito dal trigger002_cargoaway, nel caso faccio parlare base
+if (hemttaway == 1) then {goto "parlato1"};
+
+~5
+goto "cargoaway";
+
+#parlato1
+variabile_parlato = 16;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Bene squadra vi vediamo in movimento. Rimanete sulla strada indicata. Chiudo.";
+
+~1.0
+
+exit

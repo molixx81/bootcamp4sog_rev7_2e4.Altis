@@ -1,0 +1,30 @@
+;-----------------------------------------------
+;mission002_ss002_checkSettoreA.sqs 
+;verifica non presenza di EAST in trigger_002_16 ogni secondo
+;-----------------------------------------------
+
+;imposto la varibile
+checksettoreA002 = 0;
+
+#checksettoreA
+
+;se il settore A non è attivato -> EAST non presente per cui val completamento
+if !(triggerActivated trigger_002_16) then {goto "endscript"};
+
+;se la missione principale si completa, termina lo script
+if (MissioneInCorso == 0) then {goto "endscriptfail"};
+
+~1
+
+goto "checksettoreA";
+
+#endscript
+
+checksettoreA002 = 1;
+exit
+
+#endscriptfail
+
+;***************** impostare fallimento missione ******************* molix
+
+exit

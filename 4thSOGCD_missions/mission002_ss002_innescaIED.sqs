@@ -1,0 +1,15 @@
+;-----------------------------------------------
+;mission002_ss002_innescaIED.sqs
+;innesca IED
+;-----------------------------------------------
+
+_bomb = "Bo_GBU12_LGB" createVehicle getpos trigger_002_13;  
+;*** Bo_GBU12_lgb
+;*** altra bomba APERSTripMine_Wire_Ammo
+;*** altra bomba Rocket_04_HE_F
+_bomb setdamage 1;
+~5
+deletevehicle IEDBomb;
+deletevehicle _bomb;
+
+exit

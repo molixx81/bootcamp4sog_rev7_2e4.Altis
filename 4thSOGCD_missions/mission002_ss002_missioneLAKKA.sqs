@@ -1,0 +1,125 @@
+;-----------------------------------------------
+;mission002_ss002_missioneLAKKA.sqs
+;Ribelli a lakka
+;-----------------------------------------------
+
+;variabile inerente al trasporto munizioni sull'obiettivo: 0 non arrivato, 1 arrivato, 2 è stato distrutto
+
+;quando il cargo entra nel trigger tr002_lakka
+#rilevo
+	if (triggerActivated tr002_lakka) then {goto "spawnlakka"};
+~1
+	goto "rilevo";
+
+#spawnlakka
+
+;invio il primo messaggio 
+	variabile_parlato = 7;
+	publicVariable "variabile_parlato";
+	[west, "Base"] sideChat "Squadra abbiamo un imprevisto. Sembra che a Lakka ci sia in corso dell'attività da parte dei ribelli locali.";
+~2
+	[west, "Base"] sideChat "Il percorso sulla strada è tangente alla città per cui il contatto sarà probabilmente inevitabile.. ";
+~2
+	[west, "Base"] sideChat "Eliminate la resistenza e tenete al sicuro le munizioni che state trasportando, non devono cadere nelle mani dei ribelli!";
+~2
+;creo il task della missione e lo stabilisco su trig002cararriv (FOB)
+	[west,["task_lakka"],["Attività ribelle a Lakka, esattamente dove dovete passare con la carovana. Eliminate ribelli","Eliminare","cookiemarker"],getmarkerpos "marker002_Lakka",1,2,true] call BIS_fnc_taskCreate;
+
+;spawno i ribelli ********************************************* proseguire con descrizione
+	
+	["spawn002_rib_lakka_1",6,"RIB","grpre1_lakka","lakka002_wp_3","lakka002_wp_4","lakka002_wp_1","lakka002_wp_2","lakka002_wp_5","COLUMN","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+	["spawn002_rib_lakka_2",5,"RIB","grpre2_lakka","lakka002_wp_1","lakka002_wp_2","lakka002_wp_3","lakka002_wp_4","lakka002_wp_5","COLUMN","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+	["spawn002_rib_lakka_3",6,"RIB","grpre3_lakka","lakka002_wp_5","lakka002_wp_4","lakka002_wp_3","lakka002_wp_2","lakka002_wp_1","COLUMN","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+
+
+;creo veicolo distrutto su lakka
+	_cardistrutta = "C_Van_01_box_F" createVehicle getmarkerpos "marker002_lakkacardistrutta";_cardistrutta setdir 345;_cardistrutta setdamage 1;
+
+;creo oggetti statici posto di blocco
+	_simpleObject_0 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12444.801758,15874.119141,20.796797]];
+	_simpleObject_0 setVectorDirAndUp [[0.68128,0.731929,-0.0117287],[0.0186564,-0.00134379,0.999825]];
+	_simpleObject_1 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12443.49707,15875.318359,20.822748]];
+	_simpleObject_1 setVectorDirAndUp [[0.589199,0.807927,-0.0099084],[0.0186564,-0.00134379,0.999825]];
+	_simpleObject_2 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12442.113281,15876.584961,20.849762]];
+	_simpleObject_2 setVectorDirAndUp [[0.661786,0.74962,-0.0104633],[0.0173306,-0.00134383,0.999849]];
+	_simpleObject_3 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12443.9375,15883.282227,20.825146]];
+	_simpleObject_3 setVectorDirAndUp [[0.68128,0.731929,-0.0117287],[0.0186564,-0.00134379,0.999825]];
+	_simpleObject_4 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12442.632813,15884.481445,20.851099]]; 
+	_simpleObject_4 setVectorDirAndUp [[0.589199,0.807927,-0.0099084],[0.0186564,-0.00134379,0.999825]];
+	_simpleObject_5 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_short_f.p3d', [12441.249023,15885.748047,20.87163]];
+	_simpleObject_5 setVectorDirAndUp [[0.661814,0.749592,-0.0107057],[0.0146601,0.00133707,0.999892]];
+
+;creo tecnica su lacca posto di blocco
+["spawn002_tecnicallakka",45, "grpgunlakka1","tecnicalakka1","RED","AWARE","NERA"] exec "4thSOGCD_script\script_REB_spawn_tecnica_guard_1.sqs"; 
+
+;creo il tipo a piedi sul posto di blocco
+	_grpgunner_002b = createGroup EAST;  
+	gunnertecnicalakka_002b = _grpgunner_002b createUnit ["LOP_AFR_OPF_Infantry_Corpsman",getmarkerpos "spawn002_tecnicallakka_1",[],0,"NONE"]; 
+	gunnertecnicalakka_002b setdir 90;
+	gunnertecnicalakka_002b setskill ["aimingAccuracy",0.65];
+	gunnertecnicalakka_002b setskill ["aimingShake",1];
+	gunnertecnicalakka_002b setskill ["aimingSpeed",1]; 
+	gunnertecnicalakka_002b setskill ["endurance",1];
+	gunnertecnicalakka_002b setskill ["spotDistance",1];
+	gunnertecnicalakka_002b setskill ["spotTime",1];
+	gunnertecnicalakka_002b setskill ["courage",1];
+	gunnertecnicalakka_002b setskill ["reloadSpeed",1];
+	gunnertecnicalakka_002b setskill ["commanding",1];
+	gunnertecnicalakka_002b setcombatmode "RED";
+	gunnertecnicalakka_002b setBehaviour "AWARE";
+	gunnertecnicalakka_002b setdir 90;
+	gunnertecnicalakka_002b setformdir 90;
+
+
+	;eseguo lo script per il corteo dei rinforzi che arriverà quando BLU entrerà nel trigger trg002_corteoarrivato
+	[] exec "4thSOGCD_missions\mission002_ss002_missioneLAKKA_corteo.sqs";
+
+
+~10
+#checknoopforlakka 
+	if !(triggerActivated tr002_lakkacheck) then {goto "complete"};
+	if !(alive HEMTT) then {trasportoinzona_002_a = 2; goto "missionfail"};
+~10
+	goto "checknoopforlakka";
+
+#complete
+	;aspetto 5 secondi
+	~5
+	["task_lakka", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+	variabile_parlato = 8;
+	publicVariable "variabile_parlato";
+	[west, "Base"] sideChat "Ottimo lavoro squadra! Ora riprendete la consegna delle munizioni alla FOB Golf";
+	goto "endscript";
+
+
+#missionfail
+	["task_lakka", "FAILED",true] spawn BIS_fnc_taskSetState;
+	goto "endscript";
+
+
+#endscript
+	if !(triggerActivated trg002_lakka_noblu) then {goto "exit"};
+	~10
+	goto "endscript";
+
+#exit
+deletevehicle _cardistrutta;
+deletevehicle _simpleObject_0;
+deletevehicle _simpleObject_1;
+deletevehicle _simpleObject_2;
+deletevehicle _simpleObject_3;
+deletevehicle _simpleObject_4;
+deletevehicle _simpleObject_5;
+deletevehicle gunnertecnicalakka_002b;
+;******************* elimino i rinforzi della tecnica a lakka
+tecnicaarmataVAR_1 = 2;
+;******************* elimino i ribelli fanteria a lakka
+Elimgrpfant_1 = 1;
+;******************* elimino la tecnica di guardia a lakka
+tecnicaguardVAR_1 = 1;
+
+
+exit;
+
+
+

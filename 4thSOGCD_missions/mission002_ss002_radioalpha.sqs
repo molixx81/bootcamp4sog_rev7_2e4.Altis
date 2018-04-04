@@ -1,0 +1,30 @@
+;-----------------------------------------------
+;mission002_ss002_radioalpha.sqs
+;Verifica ogni x secondi che Bluefor sia su un trigger dell'IED e che utilizzi o meno radio aplha
+;-----------------------------------------------
+
+;imposto la variabile globale
+radioalphaattivato002 = 0;
+esplosioneIED002== 0;
+
+#aggiungiradio
+triggerRadioAlpha002 = createTrigger ["EmptyDetector", [0, 0, 0]];
+triggerRadioAlpha002 setTriggerActivation ["ALPHA", "PRESENT", true];
+
+#checkradio
+
+
+
+if ((triggerActivated triggerRadioAlpha002) && (triggerActivated trigger_002_14)) then {radioalphaattivato002 = 1; goto "endscript"};
+if ((triggerActivated triggerRadioAlpha002) && !(triggerActivated trigger_002_14)) then {radioalphaattivato002 = 0; goto "aggiungiradio"};
+;se l'IED è esploso, termina script
+if (esplosioneIED002== 1) then {goto "endscript"};
+
+~1
+goto "checkradio";
+
+#endscript
+
+exit
+
+

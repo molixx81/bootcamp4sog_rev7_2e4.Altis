@@ -1,0 +1,71 @@
+;-------------------------
+;SPAWN UNITà RIBELLI
+;-------------------------
+
+
+;assegno le variabili che vengono usate da altri script
+checksettoreA002= 0;
+checksettoreB002= 0;
+esplosioneIED002= 0;
+
+;variabile dettata dal trigger trigger002_spawn_ribelli per spawnare i ribelli quando = a 1
+spanrb002 = 0;
+
+;aspetto che il camion passi sopra il trigger trigger002_spawn_ribelli per spawnare i ribelli ai trigger di cui sotto
+#aspettaspawn
+
+if (spanrb002 == 1) then {goto "spawnribelli"};
+~1
+goto "aspettaspawn";
+
+#spawnribelli
+
+;spawnribelli sul marker "spawn002_rib_IED_1"
+
+;*************************************** !!!!!!!!!! creare marker!!!!!!!!!!! ********************************************
+	["spawn002_rib_IED_1",4,"RIB","grpre1_002_IED","IED002_1_wp_1","IED002_1_wp_2","IED002_1_wp_3","IED002_1_wp_4","IED002_1_wp_5","LINE","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+
+~10
+
+;spawnribelli sul marker "spawn002_rib_IED_2"
+;*************************************** !!!!!!!!!! creare marker!!!!!!!!!!! ********************************************
+	["spawn002_rib_IED_2",2,"RIB","grpre2_002_IED","IED002_2_wp_1","IED002_2_wp_2","IED002_2_wp_3","IED002_2_wp_4","IED002_2_wp_5","LINE","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+
+
+;spawno il tipo con il detonatore dell' IED
+	_grpribdetonatore_002 = createGroup EAST;   
+	rebdetonatore_002 = _grpribdetonatore_002 createUnit ["LOP_AFR_OPF_Infantry_Corpsman",getmarkerpos "marker002_spot_1",[],0,"NONE"];   
+	rebdetonatore_002 setPos [getPos rebdetonatore_002  select 0, getPos rebdetonatore_002  select 1, 1];
+
+;imposto la variabile detonatoreattivo = 1 per indicare che il tipo rebdetonatore_002 è ancora vivo
+	detonatoreattivo = 1;
+
+;eseguo lo script che rileva il tizio con il detonatore
+	[] exec "4thSOGCD_missions\mission002_ss002_checkinnesco.sqs";
+
+;di seguito spawno gli oggetto per il detonatore IED
+
+	simpleObject_0 = createSimpleObject ['a3\structures_f\civ\camping\campingtable_small_f.p3d', [8601.0517578,15472.414063,123.4561]];
+	simpleObject_0 setVectorDirAndUp [[0.189396,0.976572,0.102155],[-0.104181,-0.0834645,0.99105]];
+	simpleObject_1 = createSimpleObject ['a3\structures_f\items\electronics\satellitephone_f.p3d', [8600.833984,15472.501953,124.0292206]];
+	simpleObject_1 setVectorDirAndUp [[0.744748,0.65383,0.133631],[-0.104546,-0.0834613,0.991012]];
+
+;qui creo la tecnica sul marker marker002_spot_6
+
+	_grptecnica002 = createGroup EAST;   
+	tecnica002 = "LOP_AFR_OPF_Offroad_M2" createVehicle getMarkerPos "marker002_spot_6" ; 
+	tecnica002 setPos [getPos tecnica002  select 0, getPos tecnica002  select 1, 0];
+	tecnica002 setdir 45;
+	tecnica002 setObjectTextureGlobal [0, "#(rgb,8,8,3)color(0.7,0.7,0.7,1)"];
+
+;qui creo un altro ribelle che è quello che salirà sulla tecnica come gunner quando blufor entra in trigger trigger_002_tecnica
+	_grpribgunner_002 = createGroup EAST;   
+	rebgunner_002 = _grpribgunner_002 createUnit ["LOP_AFR_OPF_Infantry_Corpsman",getmarkerpos "M002_spotgunner",[],0,"NONE"];   
+	rebgunner_002 setPos [getPos rebgunner_002  select 0, getPos rebgunner_002  select 1, 0.5];
+
+;qui creo lo script che quanto la blufor è nel trigger trigger_002_tecnica il gunner sale sulla tecnica
+	[] exec "4thSOGCD_missions\mission002_ss002_rebmoveingunner.sqs";
+
+;l'eliminazione degli oggetti lo faccio nella missioneIED
+
+exit;

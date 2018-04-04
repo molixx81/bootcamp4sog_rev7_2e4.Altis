@@ -1,0 +1,385 @@
+;-------------------------
+;mission002_ss002_spawnFOBGolf.sqs
+; spawno la FOB Golf
+;-------------------------
+
+#checktrigger
+if (triggerActivated trg002FOBGolf) then {goto "spawna"};
+~2
+goto "checktrigger";
+
+#spawna
+
+
+;spawn della FOB Golf
+
+	simpleObject_0 = createSimpleObject ['a3\structures_f_argo\walls\military\mil_wallbig_4m_damaged_left_f.p3d', [7409.53418,15805.209961,86.810806]];
+	simpleObject_0 setVectorDirAndUp [[-0.643149,0.765741,0],[0,0,1]];
+	simpleObject_1 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_patrol_v1_f.p3d', [7422.0361328,15809.896484,90.586708]];
+	simpleObject_1 setVectorDirAndUp [[-0.770235,-0.63776,0],[0,0,1]];
+	simpleObject_2 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7424.269043,15809.601563,87.400513]];
+	simpleObject_2 setVectorDirAndUp [[0.775474,0.63138,0],[0,0,1]];
+	simpleObject_3 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7421.77002,15812.696289,87.244461]];
+	simpleObject_3 setVectorDirAndUp [[0.775474,0.63138,0],[0,0,1]];
+	simpleObject_4 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7418.731934,15813.108398,87.187126]];
+	simpleObject_4 setVectorDirAndUp [[-0.649979,0.759952,0],[0,0,1]];
+	simpleObject_5 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7415.691895,15810.549805,87.168114]];
+	simpleObject_5 setVectorDirAndUp [[-0.649979,0.759952,0],[0,0,1]];
+	simpleObject_6 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7412.648926,15807.907227,86.880257]];
+	simpleObject_6 setVectorDirAndUp [[-0.649979,0.759952,0],[0,0,1]];
+	simpleObject_7 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7436.242188,15798.0761719,86.0702362]];
+	simpleObject_7 setVectorDirAndUp [[-0.792716,-0.60924,-0.0206723],[0.0199999,-0.0598866,0.998005]];
+	simpleObject_8 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7408.0610352,15800.511719,85.699211]];
+	simpleObject_8 setVectorDirAndUp [[0.805666,0.587169,0.0783182],[-0.0678412,-0.0398827,0.996899]];
+	simpleObject_9 = createSimpleObject ['a3\structures_f\mil\shelters\camonet_open_f.p3d', [7415.522949,15803.904297,87.241333]];
+	simpleObject_9 setVectorDirAndUp [[-0.599667,0.80025,0],[0,0,1]];
+	simpleObject_10 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7410.479004,15796.651367,85.661171]];
+	simpleObject_10 setVectorDirAndUp [[0,0.999201,0.0399748],[-0.0479433,-0.0399289,0.998052]];
+	simpleObject_11 = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [7417.847168,15782.643555,85.961243]];
+	simpleObject_11 setVectorDirAndUp [[0.7506,0.652077,0.10675],[-0.120449,-0.0238216,0.992434]];
+	simpleObject_12 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_long_f.p3d', [7415.940918,15797.74707,85.643181]];
+	simpleObject_12 setVectorDirAndUp [[-0.618504,0.785771,-0.00406505],[-0.0133339,-0.00532274,0.999897]];
+	simpleObject_13 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_end_f.p3d', [7414.460938,15796.566406,85.556503]];
+	simpleObject_13 setVectorDirAndUp [[0.583111,-0.81238,-0.00448993],[-0.0479433,-0.0399289,0.998052]];
+	simpleObject_14 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_long_f.p3d', [7420.786133,15801.611328,85.77874]];
+	simpleObject_14 setVectorDirAndUp [[-0.618216,0.786003,-0.00280139],[-0.0333122,-0.0226399,0.999189]];
+	simpleObject_15 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_end_f.p3d', [7419.306152,15800.430664,85.697525]];
+	simpleObject_15 setVectorDirAndUp [[0.583707,-0.811949,0.00501055],[-0.0159865,-0.00532253,0.999858]];
+	simpleObject_16 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7417.496094,15804.0439453,85.848442]];
+	simpleObject_16 setVectorDirAndUp [[0.879365,-0.474413,0.0406132],[-0.0718108,-0.0478194,0.996271]];
+	simpleObject_17 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7416.245605,15803.503906,85.749039]];
+	simpleObject_17 setVectorDirAndUp [[-0.068009,-0.997637,0.00973221],[-0.0133339,0.0106628,0.999854]];
+	simpleObject_18 = createSimpleObject ['a3\structures_f_epa\civ\camping\woodentable_large_f.p3d', [7416.582031,15804.728516,85.74157]];
+	simpleObject_18 setVectorDirAndUp [[-0.879784,-0.467557,-0.0858564],[-0.0718108,-0.0478194,0.996271]];
+	simpleObject_19 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7416.742188,15805.861328,85.881432]];
+	simpleObject_19 setVectorDirAndUp [[-0.0685168,0.996727,0.0429026],[-0.0718108,-0.0478194,0.996271]];
+	simpleObject_20 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7415.60498,15805.337891,85.774422]];
+	simpleObject_20 setVectorDirAndUp [[-0.837698,0.545061,-0.0342189],[-0.0718108,-0.0478194,0.996271]];
+	simpleObject_21 = createSimpleObject ['a3\structures_f_epa\items\food\bakedbeans_f.p3d', [7416.627441,15804.442383,86.227356]];
+	simpleObject_21 setVectorDirAndUp [[0,0.99885,0.0479432],[-0.0718978,-0.0478191,0.996265]];
+	simpleObject_22 = createSimpleObject ['a3\structures_f_epa\items\food\bakedbeans_f.p3d', [7416.0112305,15804.59082,86.190109]];
+	simpleObject_22 setVectorDirAndUp [[0,0.99885,0.0479432],[-0.0718978,-0.0478191,0.996265]];
+	simpleObject_23 = createSimpleObject ['a3\structures_f_epa\items\food\bottleplastic_v2_f.p3d', [7416.770508,15805.0546875,86.338493]];
+	simpleObject_23 setVectorDirAndUp [[0,0.99885,0.0479432],[-0.0718978,-0.0478191,0.996265]];
+	simpleObject_24 = createSimpleObject ['a3\structures_f_epa\items\food\canteen_f.p3d', [7416.429199,15804.738281,86.298241]];
+	simpleObject_24 setVectorDirAndUp [[0,0.99885,0.0479432],[-0.0718978,-0.0478191,0.996265]];
+	simpleObject_25 = createSimpleObject ['a3\structures_f_epa\items\food\cerealsbox_f.p3d', [7416.282227,15804.520508,86.305382]];
+	simpleObject_25 setVectorDirAndUp [[0,0.99885,0.0479432],[-0.0718978,-0.0478191,0.996265]];
+	simpleObject_26 = createSimpleObject ['ca\structures_e\misc\misc_market\crates_ep1.p3d', [7412.10498,15804.155273,85.919411]];
+	simpleObject_26 setVectorDirAndUp [[0,0.999943,-0.0106638],[-0.0133339,0.0106628,0.999854]];
+	simpleObject_27 = createSimpleObject ['ca\misc\drevena_bedna.p3d', [7411.814941,15802.625977,85.679504]];
+	simpleObject_27 setVectorDirAndUp [[-0.981924,0.188671,-0.0151069],[-0.0133339,0.0106628,0.999854]];
+	simpleObject_28 = createSimpleObject ['ca\misc\drevena_bedna.p3d', [7418.412109,15809.0361328,86.100822]];
+	simpleObject_28 setVectorDirAndUp [[-0.981466,0.190172,-0.0236226],[-0.0333122,-0.0479165,0.998296]];
+	simpleObject_29 = createSimpleObject ['ca\misc\drevena_bedna.p3d', [7417.0981445,15808.96582,86.0381622]];
+	simpleObject_29 setVectorDirAndUp [[-0.741424,-0.665582,-0.0853883],[-0.0718108,-0.0478194,0.996271]];
+	simpleObject_30 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_end_f.p3d', [7501.37207,15710.0283203,116.0453186]];
+	simpleObject_30 setVectorDirAndUp [[0.707852,0.706358,-0.00179048],[-0.0439507,0.0465732,0.997948]];
+	simpleObject_31 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7418.173828,15786.323242,85.825699]];
+	simpleObject_31 setVectorDirAndUp [[0.385397,0.920178,0.0688617],[-0.120449,-0.0238216,0.992434]];
+	simpleObject_32 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_long_f.p3d', [7420.626953,15780.969727,85.712067]];
+	simpleObject_32 setVectorDirAndUp [[0.749726,0.653095,0.106668],[-0.120449,-0.0238216,0.992434]];
+	simpleObject_33 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_round_f.p3d', [7422.762207,15779.527344,85.972389]];
+	simpleObject_33 setVectorDirAndUp [[0,0.99865,-0.0519351],[-0.120449,0.051557,0.99138]];
+	simpleObject_34 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7421.588867,15789.669922,86.00950623]];
+	simpleObject_34 setVectorDirAndUp [[-0.624168,0.781262,-0.00664189],[-0.0373065,-0.0213113,0.999077]];
+	simpleObject_35 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7425.772949,15806.938477,86.355927]];
+	simpleObject_35 setVectorDirAndUp [[0.0999945,-0.994686,-0.0245324],[-0.0200001,-0.0266604,0.999444]];
+	simpleObject_36 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_big_f.p3d', [7452.103027,15808.952148,86.64119]];
+	simpleObject_36 setVectorDirAndUp [[-0.681998,-0.730026,-0.044043],[0.0492681,-0.105944,0.993151]];
+	simpleObject_37 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_big_f.p3d', [7458.458984,15803.765625,86.756943]];
+	simpleObject_37 setVectorDirAndUp [[0.615634,0.788032,0],[0,0,1]];
+	simpleObject_38 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7440.776855,15792.22168,85.866142]];
+	simpleObject_38 setVectorDirAndUp [[-0.783241,-0.606252,-0.137814],[-0.155417,-0.0237047,0.987564]];
+	simpleObject_39 = createSimpleObject ['a3\structures_f\civ\market\crateswooden_f.p3d', [7442.182129,15802.253906,86.136978]];
+	simpleObject_39 setVectorDirAndUp [[-0.846437,-0.532454,-0.00609497],[0.0346375,-0.0664777,0.997187]];
+	simpleObject_40 = createSimpleObject ['ca\misc\drevena_bedna.p3d', [7443.608887,15799.469727,85.65062]];
+	simpleObject_40 setVectorDirAndUp [[0,0.997785,0.0665176],[0.0346375,-0.0664777,0.997187]];
+	simpleObject_41 = createSimpleObject ['ca\misc\drevena_bedna.p3d', [7444.565918,15798.500977,85.55175]];
+	simpleObject_41 setVectorDirAndUp [[0,0.997785,0.0665176],[0.0346375,-0.0664777,0.997187]];
+	simpleObject_42 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7425.76123,15794.450195,85.72467]];
+	simpleObject_42 setVectorDirAndUp [[0.608698,-0.793368,-0.00737979],[0.0173306,0.00399619,0.999842]];
+	simpleObject_43 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7431.0258789,15798.790039,85.803612]];
+	simpleObject_43 setVectorDirAndUp [[0.608667,-0.792637,-0.0353655],[-0.0200001,-0.0598866,0.998005]];
+	simpleObject_44 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7429.587891,15808.234375,86.0901413]];
+	simpleObject_44 setVectorDirAndUp [[0.608789,-0.793317,-0.00504129],[0.00134403,-0.00532321,0.999985]];
+	simpleObject_45 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7434.352051,15811.882813,86.220329]];
+	simpleObject_45 setVectorDirAndUp [[0.608551,-0.793482,-0.00729103],[-0.0279914,-0.0306484,0.999138]];
+	simpleObject_46 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7439.516113,15816.0888672,86.412155]];
+	simpleObject_46 setVectorDirAndUp [[0.608724,-0.793368,-0.00482523],[-0.0146602,-0.0173287,0.999742]];
+	simpleObject_47 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7409.37207,15792.75,85.181168]];
+	simpleObject_47 setVectorDirAndUp [[0.608667,-0.793297,-0.0142585],[-0.0200001,-0.0333055,0.999245]];
+	simpleObject_48 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7404.269043,15788.71875,84.928665]];
+	simpleObject_48 setVectorDirAndUp [[0.608614,-0.793325,-0.0149982],[-0.023996,-0.0372958,0.999016]];
+	simpleObject_49 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7399.173828,15784.363281,84.602661]];
+	simpleObject_49 setVectorDirAndUp [[0.60827,-0.793729,-0.00129847],[-0.0413002,-0.0332838,0.998592]];
+	simpleObject_50 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7411.173828,15781.630859,84.995094]];
+	simpleObject_50 setVectorDirAndUp [[0.608009,-0.793698,0.0191668],[-0.0505929,-0.0146414,0.998612]];
+	simpleObject_51 = createSimpleObject ['ca\misc3\cncblock_stripes.p3d', [7406.454102,15777.803711,84.732063]];
+	simpleObject_51 setVectorDirAndUp [[0.608236,-0.793587,0.0164223],[-0.0426255,-0.0119963,0.999019]];
+	simpleObject_52 = createSimpleObject ['a3\structures_f\system\cluttercutter_large_f.p3d', [7571.0161133,15696.103516,123.49485]];
+	simpleObject_52 setVectorDirAndUp [[0,0.998974,0.0452934],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_53 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7569.651367,15695.0683594,123.996956]];
+	simpleObject_53 setVectorDirAndUp [[-0.785948,0.616022,0.0529394],[0.0213262,-0.0585615,0.998056]];
+	simpleObject_54 = createSimpleObject ['a3\structures_f\items\vessels\metalbarrel_f.p3d', [7570.0644531,15706.796875,124.115723]];
+	simpleObject_54 setVectorDirAndUp [[-0.29998,0.953417,-0.0317467],[0.0466181,0.0478911,0.997764]];
+	simpleObject_55 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_tower_v1_f.p3d', [7561.604004,15705.786133,136.910324]];
+	simpleObject_55 setVectorDirAndUp [[0.69804,-0.716058,0],[0,0,1]];
+	simpleObject_56 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7558.743164,15713.735352,124.184288]];
+	simpleObject_56 setVectorDirAndUp [[-0.699317,0.709821,-0.0843172],[0.0213262,0.138623,0.990116]];
+	simpleObject_57 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7554.709961,15709.765625,124.629028]];
+	simpleObject_57 setVectorDirAndUp [[-0.699476,0.71374,-0.0361565],[0,0.0505929,0.998719]];
+	simpleObject_58 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7555.155762,15702.47168,124.776176]];
+	simpleObject_58 setVectorDirAndUp [[-0.717105,-0.69648,-0.0260013],[0,-0.0373065,0.999304]];
+	simpleObject_59 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7558.899902,15698.59668,124.631485]];
+	simpleObject_59 setVectorDirAndUp [[-0.717089,-0.696784,-0.0165906],[0.00666691,-0.0306597,0.999508]];
+	simpleObject_60 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7569.0332031,15701.587891,124.487289]];
+	simpleObject_60 setVectorDirAndUp [[-0.699057,0.713638,0.0451695],[0.0346375,-0.0292997,0.99897]];
+	simpleObject_61 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_5_f.p3d', [7565,15697.618164,124.481613]];
+	simpleObject_61 setVectorDirAndUp [[-0.699297,0.713567,0.0424951],[0.0226524,-0.037297,0.999047]];
+	simpleObject_62 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7549.629883,15728.900391,123.559937]];
+	simpleObject_62 setVectorDirAndUp [[-0.70178,0.712394,0],[0,0,1]];
+	simpleObject_63 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7546.812012,15726.0839844,123.460037]];
+	simpleObject_63 setVectorDirAndUp [[-0.70178,0.712394,0],[0,0,1]];
+	simpleObject_64 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7543.974121,15723.305664,123.733635]];
+	simpleObject_64 setVectorDirAndUp [[-0.70178,0.712394,0],[0,0,1]];
+	simpleObject_65 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7541.0869141,15720.509766,124.0141983]];
+	simpleObject_65 setVectorDirAndUp [[-0.70178,0.712394,0],[0,0,1]];
+	simpleObject_66 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7560.381836,15736.121094,123.442032]];
+	simpleObject_66 setVectorDirAndUp [[-0.408298,0.912848,0],[0,0,1]];
+	simpleObject_67 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7563.643066,15735.53125,123.682037]];
+	simpleObject_67 setVectorDirAndUp [[0.719897,0.694081,0],[0,0,1]];
+	simpleObject_68 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_3_f.p3d', [7551.551758,15728.94043,122.839027]];
+	simpleObject_68 setVectorDirAndUp [[0.677314,-0.723358,0.13416],[-0.0678412,0.120171,0.990432]];
+	simpleObject_69 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7551.341797,15730.794922,122.503479]];
+	simpleObject_69 setVectorDirAndUp [[0.672672,-0.72764,0.134362],[-0.0678412,0.120171,0.990432]];
+	simpleObject_70 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7550.165039,15730.0517578,122.513649]];
+	simpleObject_70 setVectorDirAndUp [[0.706191,0.707032,-0.037414],[-0.0678412,0.120171,0.990432]];
+	simpleObject_71 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_3_f.p3d', [7559.402832,15734.28418,122.654572]];
+	simpleObject_71 setVectorDirAndUp [[0.393827,-0.913212,0.104611],[-0.0612227,0.0874955,0.994282]];
+	simpleObject_72 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7557.833008,15735.236328,122.384621]];
+	simpleObject_72 setVectorDirAndUp [[0.433426,-0.897479,0.0816848],[-0.0612227,0.0611079,0.996252]];
+	simpleObject_73 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7558.912109,15735.969727,122.405869]];
+	simpleObject_73 setVectorDirAndUp [[-0.919138,-0.3926,-0.0324027],[-0.0612227,0.0611079,0.996252]];
+	simpleObject_74 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_house_v1_f.p3d', [7549.942871,15721.910156,123.0712738]];
+	simpleObject_74 setVectorDirAndUp [[-0.697503,0.716582,0],[0,0,1]];
+	simpleObject_75 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_house_v1_f.p3d', [7543.422852,15715.238281,124.0406799]];
+	simpleObject_75 setVectorDirAndUp [[-0.697503,0.716582,0],[0,0,1]];
+	simpleObject_76 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7566.484863,15732.700195,124.0157089]];
+	simpleObject_76 setVectorDirAndUp [[0.719897,0.694081,0],[0,0,1]];
+	simpleObject_77 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7569.251953,15729.87793,124.213676]];
+	simpleObject_77 setVectorDirAndUp [[0.719897,0.694081,0],[0,0,1]];
+	simpleObject_78 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7571.0698242,15726.537109,124.371849]];
+	simpleObject_78 setVectorDirAndUp [[0.979286,0.20248,0],[0,0,1]];
+	simpleObject_79 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7572.265137,15722.881836,124.521492]];
+	simpleObject_79 setVectorDirAndUp [[0.919705,0.39261,0],[0,0,1]];
+	simpleObject_80 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7574.51416,15719.709961,124.655884]];
+	simpleObject_80 setVectorDirAndUp [[0.706897,0.707317,0],[0,0,1]];
+	simpleObject_81 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7538.26123,15717.75293,124.346016]];
+	simpleObject_81 setVectorDirAndUp [[-0.70178,0.712394,0],[0,0,1]];
+	simpleObject_82 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7536.710938,15714.330078,124.766174]];
+	simpleObject_82 setVectorDirAndUp [[-0.99367,0.112336,0],[0,0,1]];
+	simpleObject_83 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7536.225098,15710.386719,125.13707]];
+	simpleObject_83 setVectorDirAndUp [[-0.99367,0.112336,0],[0,0,1]];
+	simpleObject_84 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7537.429199,15706.919922,125.430267]];
+	simpleObject_84 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_85 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7540.210938,15704.136719,125.589531]];
+	simpleObject_85 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_86 = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [7495.990234,15706.183594,116.668587]];
+	simpleObject_86 setVectorDirAndUp [[0.968853,-0.246601,0.0226364],[-0.0026529,0.0810685,0.996705]];
+	simpleObject_87 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_long_f.p3d', [7498.166016,15708.918945,115.977898]];
+	simpleObject_87 setVectorDirAndUp [[0.938871,-0.340473,0.0509781],[-0.0373065,0.0465858,0.998217]];
+	simpleObject_88 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_round_f.p3d', [7499.854004,15710.595703,115.962738]];
+	simpleObject_88 setVectorDirAndUp [[0.0409229,-0.998004,0.0481053],[-0.0373065,0.0465858,0.998217]];
+	simpleObject_89 = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_round_f.p3d', [7497.0688477,15703.0166016,116.409225]];
+	simpleObject_89 setVectorDirAndUp [[0.836341,0.545975,-0.0494581],[-0.0026529,0.094247,0.995545]];
+	simpleObject_90 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_hq_v1_f.p3d', [7557.339844,15688.0537109,127.107239]];
+	simpleObject_90 setVectorDirAndUp [[0.723871,0.689935,0],[0,0,1]];
+	simpleObject_91 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7549.132813,15686.240234,124.836967]];
+	simpleObject_91 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_92 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7551.911133,15683.305664,124.538544]];
+	simpleObject_92 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_93 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7554.746094,15680.496094,124.0759125]];
+	simpleObject_93 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_94 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7557.573242,15677.680664,123.53524]];
+	simpleObject_94 setVectorDirAndUp [[-0.700262,-0.713886,0],[0,0,1]];
+	simpleObject_95 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7563.645996,15680.301758,123.98687]];
+	simpleObject_95 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_96 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7566.463867,15683.0175781,124.453064]];
+	simpleObject_96 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_97 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7569.255859,15685.786133,124.584999]];
+	simpleObject_97 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_98 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7560.726074,15677.53418,123.496727]];
+	simpleObject_98 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_99 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7546.90918,15689.495117,125.151932]];
+	simpleObject_99 setVectorDirAndUp [[-0.9519,-0.30641,0],[0,0,1]];
+	simpleObject_100 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7545.688965,15693.353516,125.391434]];
+	simpleObject_100 setVectorDirAndUp [[-0.955911,-0.293657,0],[0,0,1]];
+	simpleObject_101 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7542.23291,15702.484375,124.621452]];
+	simpleObject_101 setVectorDirAndUp [[0.693495,0.719876,0.0290555],[-0.0266655,-0.0146549,0.999537]];
+	simpleObject_102 = createSimpleObject ['a3\structures_f\mil\fortification\hbarrier_1_f.p3d', [7545.0297852,15695.962891,124.541649]];
+	simpleObject_102 setVectorDirAndUp [[0.948595,0.31649,-0.0012653],[0.0186564,-0.051926,0.998477]];
+	simpleObject_103 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7572.162109,15688.564453,124.725571]];
+	simpleObject_103 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_104 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7575.0371094,15691.328125,124.840744]];
+	simpleObject_104 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_105 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7577.868164,15694.107422,125.0120316]];
+	simpleObject_105 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_106 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7577.34082,15716.924805,124.71389]];
+	simpleObject_106 setVectorDirAndUp [[0.706897,0.707317,0],[0,0,1]];
+	simpleObject_107 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7580.733887,15696.851563,124.992355]];
+	simpleObject_107 setVectorDirAndUp [[0.693251,-0.720696,0],[0,0,1]];
+	simpleObject_108 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7582.522949,15700.19043,124.941063]];
+	simpleObject_108 setVectorDirAndUp [[0.979998,-0.199009,0],[0,0,1]];
+	simpleObject_109 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7583.271973,15704.112305,124.886948]];
+	simpleObject_109 setVectorDirAndUp [[0.979998,-0.199009,0],[0,0,1]];
+	simpleObject_110 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7580.165039,15714.130859,124.749367]];
+	simpleObject_110 setVectorDirAndUp [[0.706897,0.707317,0],[0,0,1]];
+	simpleObject_111 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7582.967773,15711.285156,124.729668]];
+	simpleObject_111 setVectorDirAndUp [[0.706897,0.707317,0],[0,0,1]];
+	simpleObject_112 = createSimpleObject ['a3\structures_f\walls\mil_wallbig_4m_f.p3d', [7584.0332031,15707.916016,124.743767]];
+	simpleObject_112 setVectorDirAndUp [[0.979998,-0.199009,0],[0,0,1]];
+	simpleObject_113 = createSimpleObject ['a3\structures_f\mil\shelters\camonet_open_f.p3d', [7571.116211,15695.00390625,125.457161]];
+	simpleObject_113 setVectorDirAndUp [[0.685056,-0.72849,0],[0,0,1]];
+	simpleObject_114 = createSimpleObject ['a3\structures_f\mil\cargo\cargo_house_v1_f.p3d', [7565.355957,15726.824219,123.326706]];
+	simpleObject_114 setVectorDirAndUp [[0.710677,0.703519,0],[0,0,1]];
+	simpleObject_115 = createSimpleObject ['a3\structures_f\ind\cargo\cargo20_military_green_f.p3d', [7581.150879,15705.795898,124.58551]];
+	simpleObject_115 setVectorDirAndUp [[-0.987817,0.149504,0.0431957],[0.0452934,0.0106528,0.998917]];
+	simpleObject_116 = createSimpleObject ['a3\structures_f\ind\cargo\cargo20_sand_f.p3d', [7578.588379,15712.392578,124.583672]];
+	simpleObject_116 setVectorDirAndUp [[0.701196,0.710589,-0.0581987],[0.0585572,0.0239548,0.997997]];
+	simpleObject_117 = createSimpleObject ['a3\structures_f_epa\mil\scrapyard\paperbox_open_full_f.p3d', [7579.166992,15707.375977,123.943726]];
+	simpleObject_117 setVectorDirAndUp [[0,0.999943,-0.0106638],[0.0452934,0.0106528,0.998917]];
+	simpleObject_118 = createSimpleObject ['a3\structures_f_epa\mil\scrapyard\paperbox_open_empty_f.p3d', [7577.701172,15709.630859,123.985138]];
+	simpleObject_118 setVectorDirAndUp [[-0.629352,-0.776248,0.0368146],[0.0452934,0.0106528,0.998917]];
+	simpleObject_119 = createSimpleObject ['a3\structures_f_epa\mil\scrapyard\paperbox_closed_f.p3d', [7571.154785,15705.128906,124.366379]];
+	simpleObject_119 setVectorDirAndUp [[0.804505,0.590277,-0.0659209],[0.0466181,0.0478911,0.997764]];
+	simpleObject_120 = createSimpleObject ['a3\structures_f\items\vessels\metalbarrel_f.p3d', [7569.936523,15706.169922,124.151756]];
+	simpleObject_120 setVectorDirAndUp [[0,0.99885,-0.0479433],[0.0466181,0.0478911,0.997764]];
+	simpleObject_121 = createSimpleObject ['a3\structures_f\items\vessels\metalbarrel_f.p3d', [7570.607422,15706.368164,124.110947]];
+	simpleObject_121 setVectorDirAndUp [[0.316546,-0.94808,0.0307165],[0.0466181,0.0478911,0.997764]];
+	simpleObject_122 = createSimpleObject ['a3\structures_f\items\vessels\metalbarrel_f.p3d', [7577.179199,15711.173828,123.774719]];
+	simpleObject_122 setVectorDirAndUp [[0.990828,-0.12335,-0.0551758],[0.0585572,0.0239548,0.997997]];
+	simpleObject_123 = createSimpleObject ['a3\structures_f\civ\infoboards\mapboard_f.p3d', [7573.0883789,15693.34668,124.265312]];
+	simpleObject_123 setVectorDirAndUp [[0.646415,-0.76086,-0.056924],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_124 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7570.82666,15696.302734,124.0160904]];
+	simpleObject_124 setVectorDirAndUp [[-0.734852,0.6759,0.0561401],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_125 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7572.321289,15697.402344,124.0141525]];
+	simpleObject_125 setVectorDirAndUp [[-0.0887884,0.994884,0.0481884],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_126 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7574.171387,15697.423828,123.951019]];
+	simpleObject_126 setVectorDirAndUp [[-0.0326644,0.998389,0.0464001],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_127 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7570.79541,15698.0976563,124.0892792]];
+	simpleObject_127 setVectorDirAndUp [[-0.298378,0.953678,0.038317],[0.0346375,-0.0292997,0.99897]];
+	simpleObject_128 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7569.241211,15696.168945,124.0679855]];
+	simpleObject_128 setVectorDirAndUp [[-0.785655,0.616198,0.0551958],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_129 = createSimpleObject ['a3\structures_f\civ\camping\campingchair_v2_f.p3d', [7573.0722656,15698.602539,124.0241699]];
+	simpleObject_129 setVectorDirAndUp [[-0.110362,0.993345,0.0329613],[0.0346375,-0.0292997,0.99897]];
+	simpleObject_130 = createSimpleObject ['a3\structures_f\civ\camping\campingtable_small_f.p3d', [7573.152832,15695.158203,123.782387]];
+	simpleObject_130 setVectorDirAndUp [[0.0688793,-0.99649,-0.0475705],[0.0346375,-0.0452662,0.998374]];
+	simpleObject_131 = createSimpleObject ['a3\structures_f\civ\market\crateswooden_f.p3d', [7576.0449219,15695.0498047,124.0646667]];
+	simpleObject_131 setVectorDirAndUp [[-0.851343,0.524511,0.0101407],[-0.016004,-0.0452876,0.998846]];
+	simpleObject_132 = createSimpleObject ['a3\structures_f_epa\mil\scrapyard\paperbox_closed_f.p3d', [7571.399902,15691.31543,123.877235]];
+	simpleObject_132 setVectorDirAndUp [[0.991283,0.131057,-0.0134916],[0.0213262,-0.0585615,0.998056]];
+	simpleObject_133 = createSimpleObject ['a3\structures_f_epa\mil\scrapyard\paperbox_closed_f.p3d', [7569.376953,15690.94043,123.898361]];
+	simpleObject_133 setVectorDirAndUp [[0.887075,0.461554,0.00812718],[0.0213262,-0.0585615,0.998056]];
+	simpleObject_134 = createSimpleObject ['a3\structures_f\items\documents\filephotos_f.p3d', [7572.943359,15695.129883,124.205841]];
+	simpleObject_134 setVectorDirAndUp [[0,0.998975,0.0452758],[0.0346728,-0.0452485,0.998374]];
+	simpleObject_135 = createSimpleObject ['a3\structures_f\items\electronics\laptop_unfolded_f.p3d', [7573.341797,15695.119141,124.339378]];
+	simpleObject_135 setVectorDirAndUp [[-0.483251,-0.875182,-0.0228823],[0.0346728,-0.0452485,0.998374]];
+	simpleObject_136 = createSimpleObject ['ca\misc3\wf\sign_flag.p3d', [7558.0478516,15736.493164,122.324913]];
+	simpleObject_136 setVectorDirAndUp [[0.472658,-0.881246,0],[0,0,1]];
+	simpleObject_137 = createSimpleObject ['ca\misc3\wf\sign_flag.p3d', [7540.565918,15702.513672,124.581581]];
+	simpleObject_137 setVectorDirAndUp [[0.712859,0.701308,0],[0,0,1]];
+
+;creo il trasporto finto in basso
+	trasportogolf002a = "rhsusf_M977A4_usarmy_d" createVehicle [7435.97,15793.8,0];
+	trasportogolf002a setdir 150;
+
+;creo la bandiera americana
+	bandieraamericana002golfa = "FlagCarrierUSA_EP1" createVehicle [7435.97,15793.8,0];
+
+;creo la fanteria nato in basso
+	fob002golfa = createGroup WEST;   
+	fanteria002golfa = fob002golfa createUnit ["rhsusf_army_ocp_autorifleman", [7417.66,15782.5,0],[],0,"NONE"];   
+	fanteria002golfa setdir 223;
+	fanteria002golfa setformdir 223;
+
+	fob002golfb = createGroup WEST;   
+	fanteria002golfb = fob002golfb createUnit ["rhsusf_army_ocp_rifleman", [7412.94,15796.7,0],[],0,"NONE"];   
+	fanteria002golfb setdir 190;
+	fanteria002golfb setformdir 190;
+
+	fob002golfc = createGroup WEST;   
+	fanteria002golfc = fob002golfc createUnit ["rhsusf_army_ocp_rifleman", [7415.19,15806.6,0],[],0,"NONE"];   
+	fanteria002golfc setdir 122;
+	fanteria002golfc setformdir 122;
+
+	fob002golfd = createGroup WEST;   
+	fanteria002golfd = fob002golfd createUnit ["rhsusf_army_ocp_driver", [7437.4,15800.9,0],[],0,"NONE"];   
+	fanteria002golfd setdir 0;
+	fanteria002golfd setformdir 0;
+
+	fob002golfe = createGroup WEST;   
+	fanteria002golfe = fob002golfe createUnit ["rhsusf_army_ocp_grenadier", [7422.79,15780.4,0],[],0,"NONE"];   
+	fanteria002golfe setdir 191;
+	fanteria002golfe setformdir 191;
+
+;creo i due hammer in alto
+	_trasportogolf002b = "rhsusf_m1025_d_m2" createVehicle [7557.25,15715.9,0];
+	_trasportogolf002b setdir 43.3;
+
+	_trasportogolf002c = "rhsusf_m1025_d_m2" createVehicle [7552.86,15711.4,0];
+	_trasportogolf002c setdir 43.3;
+
+;creo l'hammer di trasporto in alto
+	_trasportogolf002d = "rhsusf_m998_d_2dr" createVehicle [7573.23,15716.3,0];
+	_trasportogolf002d setdir 95;
+
+;creo la fanteria nella base golf in alto
+	fob002golff = createGroup WEST;   
+	fanteria002golff = fob002golff createUnit ["rhsusf_army_ocp_machinegunner", [7553.02,15685.8,3.316],[],0,"NONE"];   
+	fanteria002golff setdir 225;
+	fanteria002golff setformdir 225;
+
+	fob002golfg = createGroup WEST;   
+	fanteria002golfg = fob002golfg createUnit ["rhsusf_army_ocp_rifleman_m4", [7554.68,15692,0.429001],[],0,"NONE"];   
+	fanteria002golfg setdir 309;
+	fanteria002golfg setformdir 309;
+
+	fob002golfh = createGroup WEST;   
+	fanteria002golfh = fob002golfh createUnit ["rhsusf_army_ocp_rifleman", [7564.31,15688.3,3.13525],[],0,"NONE"];   
+	fanteria002golfh setdir 37;
+	fanteria002golfh setformdir 37;
+
+	fob002golfi = createGroup WEST;   
+	fanteria002golfi = fob002golfi createUnit ["rhsusf_army_ocp_sniper", [7556.48,15701.7,17.808],[],0,"NONE"];   
+	fanteria002golfi setdir 219;
+	fanteria002golfi setformdir 219;
+
+	fob002golfl = createGroup WEST;   
+	fanteria002golfl = fob002golfl createUnit ["rhsusf_army_ocp_javelin", [7559.9,15711.7,18.1674],[],0,"NONE"];   
+	fanteria002golfl setdir 309;
+	fanteria002golfl setformdir 309;
+
+	fob002golfm = createGroup WEST;   
+	fanteria002golfm = fob002golfm createUnit ["rhsusf_army_ocp_grenadier", [7565.25,15707.4,8.81198],[],0,"NONE"];   
+	fanteria002golfm setdir 39;
+	fanteria002golfm setformdir 39;
+
+;creo la mitragliatrice pesante
+
+	fob002golfo = createGroup WEST;   
+	fanteria002golfo = fob002golfo createUnit ["rhsusf_army_ocp_rifleman_m4", [7495.83,15706.4,2],[],0,"NONE"];  
+
+
+
+
+
+
+
+
+; ricordati di cancellare la fob!!!! ***************************************************************
+; ricordati di cancellare la fob!!!! ***************************************************************
+; ricordati di cancellare la fob!!!! ***************************************************************
+
+
+exit

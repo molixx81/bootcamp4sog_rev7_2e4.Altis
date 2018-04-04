@@ -1,0 +1,304 @@
+;--------------------------------
+; Spawna una tecnica armata di guida e una tecnica non armata che trasporta N unità al punto di rilascio (compresi gli autisti di ambo le tecniche) by Molixx
+; Ordina successivamente alle unità rilasciate di seguire 5 Marker (4 di direzione 1 di waypoint ciclico)
+; Rev. 1.0 del 29/03/2018
+; ATTENZIONE! Per spawnare più tecniche contemporaneamente, utilizzare per ognuno, una copia diversa dello script e cambiare il nome da "tecnica_1" a "tecnica_2" e cosi via
+;--------------------------------
+
+
+;--------------------------------
+; esempio: ["tecnica2_002_attesaperlacca_1","tecnica2_002_attesaperlacca","spawn002_corteotecnica_2","stop002a1","LOP_BH_Offroad","LOP_BH_Offroad_M2",8,"grp002lakkarinforzi","LINE","lakka002_wp_1","lakka002_wp_2","lakka002_wp_3","lakka002_wp_4","lakka002_wp_5",90,90] exec "script_REB_tecnica_trasporto_e_tecnica_armata_1.sqs";
+; "spawn"       = nome del marker sulla quale spawno la tecnica
+; "spawn_armata"= nome del marker sulla quale spawno la tecnica armata
+; "rilascio"    = nome del marker sulla quale la tecnica si ferma e scaricare le unità
+; "rilascio_armata"=  nome del marker sulla quale la tecnica armata si ferma e scarica solo il driver, che si unisce alle unità trasportate dell'altra tecnica
+; "class"       = classe della tecnica non armata utilizzata come trasporto. Utilizzare SOLAMENTE veicoli dell' EAST!!!!
+; "class_armata"       = classe della tecnica non armata utilizzata come trasporto. Utilizzare SOLAMENTE veicoli dell' EAST!!!!
+; 6             = numero delle unità trasportate (da 1 fino a 6, incluso il pilota) le classi sono impostate all'interno di questo script e controllate la capacità max dell'elicottero prima, altrimenti le unità in eccesso rimangono a piedi)
+; "grp"         = nome del gruppo scaricato dalla tecnica, serve per dare gli ordini ed eventualmente per la cancellazione
+; "WP_1"        = nome del marker sulla mappa corrispondente al 1° waypoint che le unità scaricate percorreranno
+; "WP_2"        = nome del marker sulla mappa corrispondente al 2° waypoint che le unità scaricate percorreranno
+; "WP_3"        = nome del marker sulla mappa corrispondente al 3° waypoint che le unità scaricate percorreranno
+; "WP_4"        = nome del marker sulla mappa corrispondente al 4° waypoint che le unità scaricate percorreranno
+; "WP_5"        = nome del marker sulla mappa corrispondente al 5° waypoint che le unità scaricate percorreranno
+; 0             = direzione della tecnica non armata quando viene spawnato
+; 0             = direzione della tecnica armata quando viene spawnato
+;--------------------------------
+
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawn = _this select 0;
+	_spawn_armata = _this select 1;
+	_rilascio = _this select 2;
+	_rila = _this select 3;
+	_tecniclass = _this select 4;
+	_tecniclass_armata = _this select 5;
+	_nunita = _this select 6;
+	_grp = _this select 7;
+	_formation = _this select 8;
+	_WP1 = _this select 9;
+	_WP2 = _this select 10;
+	_WP3 = _this select 11;
+	_WP4 = _this select 12;
+	_WP5 = _this select 13;
+	_dir = _this select 14;
+	_dir_1 = _this select 15;
+
+; questa variabile, se 1, fa scendere l'autista e lo mette nel gruppo dei ribelli trasportati applicandone le modalità di combattimento
+; è chiaro che la variabile deve diventare 1 quando il veicolo ha raggiunto il rispettivo waypoint di scarico
+; se ci sono più veicoli che utilizzano questo script, creare uno script per veicolo e assegnare la variabile diversa da uno script all'altro (ad esempio tecnicalakka_1 per il primo script, tecnicalakka_2 per il secondo, e cosi via)
+; se la variabile = 2 (impostata esternamente da questo script) allora vuol dire che tutti gli oggetti qui creati devono essere eliminati
+	
+	tecnicaarmataVAR_1 = 0;
+	
+
+;---------------------------------------
+; Imposto le classi negli slots delle unità trasportate (veicolo non armato)
+;---------------------------------------
+	_slot1 = "LOP_BH_Infantry_Rifleman";
+	_slot2 = "LOP_BH_Infantry_AR_Asst";
+	_slot3 = "LOP_BH_Infantry_AT";
+	_slot4 = "LOP_BH_Infantry_AR";
+	_slot5 = "LOP_BH_Infantry_Corpsman";
+	_slot6 = "LOP_BH_Infantry_Rifleman";
+
+
+;---------------------------------------
+; Imposto le classi negli slots delle unità di guardia (veicolo  armato)
+;---------------------------------------
+	_slot7 = "LOP_BH_Infantry_Corpsman";
+	_slot8 = "LOP_BH_Infantry_Rifleman";
+
+
+;---------------------------------------
+; Creo la tecnica armata e il suo autista
+;---------------------------------------
+	tecnica_2 = createVehicle [_tecniclass_armata, getMarkerPos _spawn_armata,[],0,"FLY"];
+	tecnica_2 setObjectTextureGlobal [0, "#(rgb,8,8,3)color(0.7,0.7,0.7,1)"];
+	tecnica_2 setdir _dir_1;
+
+	_grppilotaar = createGroup EAST;   
+
+	_pilota_2 = _grppilotaar createUnit ["LOP_BH_Infantry_Rifleman",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_pilota_2 moveindriver tecnica_2;
+
+	_grpgunner_2 = createGroup EAST;   
+
+	_gunner_2 = _grpgunner_2 createUnit ["LOP_BH_Infantry_Rifleman",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_gunner_2 moveingunner tecnica_2;
+
+
+;---------------------------------------
+; Imposto le proprietà dell'autista della suddetta tecnica e del gunner
+;---------------------------------------
+	_grppilotaar setBehaviour "CARELESS";
+	_pilota_2 setskill ["aimingAccuracy",0.65];
+	_pilota_2 setskill ["aimingShake",1];
+	_pilota_2 setskill ["aimingSpeed",1]; 
+	_pilota_2 setskill ["endurance",1];
+	_pilota_2 setskill ["spotDistance",1];
+	_pilota_2 setskill ["spotTime",1];
+	_pilota_2 setskill ["courage",1];
+	_pilota_2 setskill ["reloadSpeed",1];
+	_pilota_2 setskill ["commanding",1];
+
+	_grpgunner_2 setBehaviour "AWARE";
+	_grpgunner_2 setCombatmode "RED";
+	_pilota_2 setskill ["aimingAccuracy",0.65];
+	_pilota_2 setskill ["aimingShake",1];
+	_pilota_2 setskill ["aimingSpeed",1]; 
+	_pilota_2 setskill ["endurance",1];
+	_pilota_2 setskill ["spotDistance",1];
+	_pilota_2 setskill ["spotTime",1];
+	_pilota_2 setskill ["courage",1];
+	_pilota_2 setskill ["reloadSpeed",1];
+	_pilota_2 setskill ["commanding",1];
+
+
+;---------------------------------------
+; Creo la tecnica non armata e il suo autista
+;---------------------------------------
+	tecnica_1 = createVehicle [_tecniclass, getMarkerPos _spawn,[],0,"FLY"];
+	tecnica_1 setObjectTextureGlobal [0, "#(rgb,8,8,3)color(0.1,0.1,0.1,1)"];
+	tecnica_1 setdir _dir;
+	_grppilota = createGroup EAST;   
+
+	_pilota_1 = _grppilota createUnit ["LOP_BH_Infantry_GL",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_pilota_1 moveindriver tecnica_1;
+
+
+;---------------------------------------
+; Imposto le proprietà dell'autista della tecnica non armata
+;---------------------------------------
+	_grppilota setBehaviour "CARELESS";
+	_pilota_1 setskill ["aimingAccuracy",0.65];
+	_pilota_1 setskill ["aimingShake",1];
+	_pilota_1 setskill ["aimingSpeed",1]; 
+	_pilota_1 setskill ["endurance",1];
+	_pilota_1 setskill ["spotDistance",1];
+	_pilota_1 setskill ["spotTime",1];
+	_pilota_1 setskill ["courage",1];
+	_pilota_1 setskill ["reloadSpeed",1];
+	_pilota_1 setskill ["commanding",1];
+
+;---------------------------------------
+; Creo le unità trasportate e ne imposto le caratteristiche
+;---------------------------------------	
+	_grp = createGroup EAST;   
+
+	_rusgunner_001 = _grp createUnit [_slot1,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_001 moveincargo tecnica_1;
+	_rusgunner_001 setskill ["aimingAccuracy",0.65];
+	_rusgunner_001 setskill ["aimingShake",1];
+	_rusgunner_001 setskill ["aimingSpeed",1]; 
+	_rusgunner_001 setskill ["endurance",1];
+	_rusgunner_001 setskill ["spotDistance",1];
+	_rusgunner_001 setskill ["spotTime",1];
+	_rusgunner_001 setskill ["courage",1];
+	_rusgunner_001 setskill ["reloadSpeed",1];
+	_rusgunner_001 setskill ["commanding",1];
+	_rusgunner_001 setcombatmode "RED";
+	_rusgunner_001 setBehaviour "AWARE";
+	if (_nunita==2) then {goto "formazione"};
+
+	_rusgunner_002 = _grp createUnit [_slot2,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_002 moveincargo tecnica_1;
+	[_rusgunner_002] join _rusgunner_001;
+	_rusgunner_002 setskill ["aimingAccuracy",0.65];
+	_rusgunner_002 setskill ["aimingShake",1];
+	_rusgunner_002 setskill ["aimingSpeed",1]; 
+	_rusgunner_002 setskill ["endurance",1];
+	_rusgunner_002 setskill ["spotDistance",1];
+	_rusgunner_002 setskill ["spotTime",1];
+	_rusgunner_002 setskill ["courage",1];
+	_rusgunner_002 setskill ["reloadSpeed",1];
+	_rusgunner_002 setskill ["commanding",1];
+	_rusgunner_002 setcombatmode "RED";
+	_rusgunner_002 setBehaviour "AWARE";
+	if (_nunita==3) then {goto "formazione"};
+
+	_rusgunner_003 = _grp createUnit [_slot3,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_003 moveincargo tecnica_1;
+	[_rusgunner_003] join _rusgunner_001;
+	_rusgunner_003 setskill ["aimingAccuracy",0.65];
+	_rusgunner_003 setskill ["aimingShake",1];
+	_rusgunner_003 setskill ["aimingSpeed",1]; 
+	_rusgunner_003 setskill ["endurance",1];
+	_rusgunner_003 setskill ["spotDistance",1];
+	_rusgunner_003 setskill ["spotTime",1];
+	_rusgunner_003 setskill ["courage",1];
+	_rusgunner_003 setskill ["reloadSpeed",1];
+	_rusgunner_003 setskill ["commanding",1];
+	_rusgunner_003 setcombatmode "RED";
+	_rusgunner_003 setBehaviour "AWARE";
+	if (_nunita==4) then {goto "formazione"};
+
+	_rusgunner_004 = _grp createUnit [_slot4,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_004 moveincargo tecnica_1;
+	[_rusgunner_004] join _rusgunner_001;
+	_rusgunner_004 setskill ["aimingAccuracy",0.65];
+	_rusgunner_004 setskill ["aimingShake",1];
+	_rusgunner_004 setskill ["aimingSpeed",1]; 
+	_rusgunner_004 setskill ["endurance",1];
+	_rusgunner_004 setskill ["spotDistance",1];
+	_rusgunner_004 setskill ["spotTime",1];
+	_rusgunner_004 setskill ["courage",1];
+	_rusgunner_004 setskill ["reloadSpeed",1];
+	_rusgunner_004 setskill ["commanding",1];
+	_rusgunner_004 setcombatmode "RED";
+	_rusgunner_004 setBehaviour "AWARE";
+	if (_nunita==5) then {goto "formazione"};
+
+	_rusgunner_005 = _grp createUnit [_slot5,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_005 moveincargo tecnica_1;
+	[_rusgunner_005] join _rusgunner_001;
+	_rusgunner_005 setskill ["aimingAccuracy",0.65];
+	_rusgunner_005 setskill ["aimingShake",1];
+	_rusgunner_005 setskill ["aimingSpeed",1]; 
+	_rusgunner_005 setskill ["endurance",1];
+	_rusgunner_005 setskill ["spotDistance",1];
+	_rusgunner_005 setskill ["spotTime",1];
+	_rusgunner_005 setskill ["courage",1];
+	_rusgunner_005 setskill ["reloadSpeed",1];
+	_rusgunner_005 setskill ["commanding",1];
+	_rusgunner_005 setcombatmode "RED";
+	_rusgunner_005 setBehaviour "AWARE";
+	if (_nunita==6) then {goto "formazione"};
+
+
+#formazione
+;---------------------------------------
+; setto le skill per le AI spawnate
+;---------------------------------------
+	_grp setFormation _formation;
+
+
+;---------------------------------------
+; imposto il waypoint della tecnica armata
+;---------------------------------------
+	_waypointa1 = _grppilotaar addWaypoint [getmarkerpos _rila, 0];
+	_waypointa1 setWaypointType "MOVE";
+	_waypointa2 = _grpgunner_2 addWaypoint [getmarkerpos _rila, 0];
+	_waypointa2 setWaypointType "MOVE";
+
+;---------------------------------------
+; imposto il waypoint della tecnica non armata: Scarica le unità
+;---------------------------------------
+	_waypointveil1 = _grppilota addWaypoint [getmarkerpos _rilascio, 0];
+	_waypointveil1 setWaypointType "TR UNLOAD";
+	;_waypointveil1 setWaypointSpeed "LIMITED";
+	_waypointveil1 setWaypointStatements ["true", "tecnicaarmataVAR_1 = 1;"];
+
+#waypoint
+;---------------------------------------
+; imposto i waypoint del gruppo trasportato
+;---------------------------------------
+	_waypoint0 = _grp addWaypoint [getmarkerpos _rilascio, 0];
+	_waypoint0 setWaypointType "GETOUT";
+	;_waypoint0 setWaypointSpeed "LIMITED";
+
+	_waypoint1 = _grp addWaypoint [getmarkerpos _WP1, 0];
+	_waypoint1 setWaypointType "MOVE";
+	;_waypoint1 setWaypointSpeed "LIMITED";
+	;_waypoint setWaypointBehaviour "SAFE";
+	;_waypoint setWaypointType "FOLLOW";
+
+	_waypoint2 = _grp addWaypoint [getmarkerpos _WP2, 0];
+	_waypoint2 setWaypointType "MOVE";
+	;_waypoint2 setWaypointSpeed "LIMITED";
+
+	_waypoint3 = _grp addWaypoint [getmarkerpos _WP3, 0];
+	_waypoint3 setWaypointType "MOVE";
+	;_waypoint3 setWaypointSpeed "LIMITED";
+
+	_waypoint4 = _grp addWaypoint [getmarkerpos _WP4, 0];
+	_waypoint4 setWaypointType "MOVE";
+	;_waypoint4 setWaypointSpeed "LIMITED";
+	;_waypoint4 setWaypointStatements ["true", "hint 'cicla'"];
+
+	_waypoint5 = _grp addWaypoint [getmarkerpos _WP5, 0];
+	_waypoint5 setWaypointType "CYCLE";
+
+
+#loop
+if (tecnicaarmataVAR_1 == 1) then {[_pilota_1, _pilota_2] join _rusgunner_001; _pilota_1 setcombatmode "RED"; _pilota_1 setBehaviour "AWARE"; _pilota_2 setcombatmode "RED"; _pilota_2 setBehaviour "AWARE"; goto "eliminazione"};
+~1
+goto "loop";
+
+
+#eliminazione
+;---------------------------------------
+; rimango in attesa della variabile per l'eliminazione delle unità (tecnica002lacca_1 = 2)
+;---------------------------------------
+if (tecnicaarmataVAR_1 == 2) then {{ deleteVehicle _x }forEach units _grp; deletevehicle _pilota_1; deletevehicle _pilota_2; deletevehicle tecnica_1; deletevehicle tecnica_2; deletevehicle _gunner_2;  goto "exit";};
+~5
+goto "eliminazione";
+
+
+#exit
+;---------------------------------------
+; esco dallo script
+;---------------------------------------
+exit

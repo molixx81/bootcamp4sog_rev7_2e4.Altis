@@ -1,0 +1,25 @@
+// *************************************
+// 4thSOG Combattimento Dinamico
+// by Ricky & Molix
+// www.4sog.it
+// *************************************
+
+// *************************************
+// definisco il respawn. Lascio anche i siti di informazione cosi da capire eventualmente cosa fare in caso di modifica
+// *************************************
+
+Respawn = 3; // Respawn type. See ? https://community.bistudio.com/wiki/Arma_3_Respawn
+respawnButton = 1; // Dai all'utente la possibilità di respawnare
+RespawnDelay = 5; // Secondi che servono al respawns della fanteria
+respawnVehicleDelay = 60; // Secondi che servono al respawns dei veicoli
+RespawnDialog = 0; // 0 abilitare il tabellone delle uccisioni (quello che apri premendo P per intenderci)
+respawnTemplates[] = {"MenuPosition"}; // da capire -> You can pick which spawnpoint to respawn at
+respawnOnStart = 0; // 1 Abilita la scelta della zona di respawn quando l'utente entra nel server. Disponibile solo per respawn "BASE" o "ISTANTANEO".
+aikills = 0; // When 1, the score table contains score of all playable units as opposed to players only.
+
+// *************************************
+// definisco i parametri necessari a spawnare la fanteria amica (come gruppo di AI)
+// *************************************
+#include "bon_recruit_units\dialog\common.hpp"
+#include "bon_recruit_units\dialog\recruitment.hpp"
+

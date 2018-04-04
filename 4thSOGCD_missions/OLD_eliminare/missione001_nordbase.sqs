@@ -1,0 +1,40 @@
+;distruggere il carro (missione test)
+
+;creo il marker della missione 
+_marker = createMarker ["elimina", getpos missione001];
+_marker setMarkerShape "ELLIPSE";
+_marker setMarkerSize [30, 30];
+_marker setMarkerColor "ColorEAST";
+
+;creo il task della missione sul trigger
+[west,["task_carro_001"],["Distruggi quella merda di macchinina","Distruggi","cookiemarker"],getMarkerPos _marker,1,2,true] call BIS_fnc_taskCreate
+
+;creo il carro da distruggere
+_carrodadistruggere = "B_G_Offroad_01_repair_F" createVehicle getMarkerPos _marker ;
+
+;Creo un loop per verificare che il carro sia effettivamente distrutto. se si vai a complete altrimenti torna al loop
+
+#verifica
+
+if (not alive _carrodadistruggere) then {goto "completato"};
+
+;aspetto 10 secondi onde evitare loop
+~10
+
+;torno al loop verifica
+goto "verifica";
+
+#completato
+
+["task_carro_001", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+
+;aspetto x secondi prima di rimuovere tutto quello che ho creato (tempo da prolungare) per alleggerire il server
+~30
+deletevehicle _carrodadistruggere;
+deleteMarker _marker;
+
+;setto la variabile MissioneInCorso = 0 cosi lo script di inizializzazione.sqs capisce la missione è conclusa
+MissioneInCorso = 0;
+
+;chiudo lo script
+exit

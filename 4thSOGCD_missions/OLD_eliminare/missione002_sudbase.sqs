@@ -1,0 +1,58 @@
+;elimina la zona (script semplice)
+
+;creo il marker della missione 
+_marker = createMarker ["elimina", getpos missione002];
+_marker setMarkerShape "ELLIPSE";
+_marker setMarkerSize [75, 75];
+_marker setMarkerColor "ColorEAST";
+
+;creo il task della missione
+[west,["task_elimina_002"],["Elimina quei quattro sfigati","Elimina","cookiemarker"],getMarkerPos _marker,1,2,true] call BIS_fnc_taskCreate
+
+;creo il bunker
+_bunker = createSimpleObject ['ca\misc3\fortified_nest_small.p3d', [11189.628906,11483.598633,23.05163]];
+_bunker setVectorDirAndUp [[-0.926398,-0.360143,-0.109925],[-0.117832,0,0.993034]];
+
+;creo il men nel bunker
+_cnt = createCenter EAST;  
+_grp = createGroup EAST;   
+_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunker ),[],0,"NONE"];   
+_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+_soldier setdir getDir _bunker+180;  
+_soldier setformdir getDir _bunker+180; 
+
+;creo un men in zona
+_cnt2 = createCenter EAST;  
+_grp2 = createGroup EAST;   
+_soldier2 = _grp2 createUnit ["O_G_Soldier_AR_F",[11202.9,11464.3,0],[],0,"NONE"];   
+_soldier2 setPos [getPos _soldier  select 0, getPos _soldier2  select 1, 0]
+_soldier2 setdir getDir _bunker+180;  
+_soldier2 setformdir getDir _bunker+180; 
+
+;aspetto x secondi
+~5
+
+;verifico che il trigger si sia disattivato (OPfor non presente)
+#verifica
+if !(triggerActivated missione002) then {goto "completato"};
+~10
+goto "verifica";
+
+#completato
+["task_elimina_002", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+
+;aspetto x secondi prima di rimuovere tutto quello che ho creato (tempo da prolungare) per alleggerire il server
+~30
+
+deletevehicle _soldier;
+deletevehicle _soldier2;
+deletevehicle _bunker;
+deleteMarker "elimina";
+
+;setto la variabile MissioneInCorso = 0 cosi lo script di inizializzazione.sqs capisce la missione è conclusa
+MissioneInCorso = 0;
+
+;chiudo lo script
+exit
+
+

@@ -1,0 +1,319 @@
+;-----------------------------------------------
+; Libera la città.
+; Script per spawnare RIB o RUS nella città.
+; esempio per richiamare questo script ["nomecittà", "RIB"] exec mission "4thSOGCD_missions\liberacitta.sqs";
+;"nomecitta" = nome della città da liberare
+; "RIB" = tipo di nemico: "RIB" o "RUS" (ribelli o russi)
+;-----------------------------------------------
+
+
+;------------------------------------
+;imposto le variabili 
+;------------------------------------
+;difficoltà = 1 easy (giocatori <3) 
+;difficoltà = 2 medium (giocatori <5)
+;difficoltà = 3 hard (giocatori 5 o +)
+	difficolta = 1;
+
+
+;------------------------------------
+;prelevo le informazioni dal main script
+;------------------------------------
+	_nomecitta = _this select 0;
+	_sidenemico = _this select 1;
+	
+
+;------------------------------------
+;imposto la posizione dei marker e gli oggetti in funzione della città  ************************************** definire questo punto
+;------------------------------------
+	if (_nomecitta == "xxxxx") then {[] exec "4thSOGCD_missions\mission_libera_città_xxxxx.sqs"};
+
+
+;------------------------------------
+;attendo 10 secondi per l'impostazione dei marker ************* sistemare con un check
+;------------------------------------
+~10
+
+
+;------------------------------------
+;imposto i marcatori come punto di spawn per le unità di fanteria statiche (sentinelle o torrette)
+;------------------------------------
+	_sentinella1 = "";
+	_sentinella2 = "";
+	_sentinella3 = "";
+	_sentinella4 = "";
+	_sentinella5 = "";
+	_sentinella7 = "";
+	_sentinella8 = "";
+	_sentinella9 = "";
+	_sentinella10 = "";
+
+
+;------------------------------------
+;imposto i marcatori come punto di spawn per le unità di fanteria di ronda
+;------------------------------------
+	_spawn1 = "";
+	_spawn2 = "";
+	_spawn3 = "";
+	_spawn4 = "";
+	_spawn5 = "";
+
+
+;------------------------------------
+;imposto i marcatori come punto di spawn per le unità corazzate statiche
+;------------------------------------
+	_corazzato1 = "";
+	_corazzato2 = "";
+	_corazzato3 = "";
+	_corazzato4 = "";
+	_corazzato5 = "";
+
+
+;------------------------------------
+;imposto i marcatori come punto di rilascio unità di rinforzo
+;------------------------------------
+	_rilascio1 = "";
+	_rilascio2 = "";
+	_rilascio3 = "";
+	_rilascio4 = "";
+	_rilascio5 = "";
+
+
+;------------------------------------
+;imposto i marcatori come waypoint per il patrol delle unità di fanteria
+;------------------------------------
+	wp_1 = "";
+	wp_2 = "";
+	wp_3 = "";
+	wp_4 = "";
+	wp_5 = "";
+	wp_6 = "";
+	wp_7 = "";
+	wp_8 = "";
+	wp_9 = "";
+	wp_10 = "";
+
+
+;------------------------------------
+;imposto i marcatori come waypoint per il patrol dei veicoli
+;------------------------------------
+	wp_carro_1 = "";
+	wp_carro_2 = "";
+	wp_carro_3 = "";
+	wp_carro_4 = "";
+	wp_carro_5 = "";
+	wp_carro_6 = "";
+	wp_carro_7 = "";
+	wp_carro_8 = "";
+	wp_carro_9 = "";
+	wp_carro_10 = "";
+
+
+;------------------------------------
+;imposto i marcatori per i rinforzi terrestri "da" - "a"
+;------------------------------------
+	_WPda1 = "";
+	_WPda2 = "";
+	_WPa1 = "";
+	_WPa2 = "";
+
+
+;------------------------------------
+;imposto i marcatori per gli obiettivi secondari. Se = 1 la missione è attiva
+;------------------------------------
+	_obj1_antenna = "";
+	_obj2_documenti = "";
+	_obj3_ostaggio = "";
+	_obj4_veicolo = "";
+
+
+;------------------------------------
+; Se uguale ad 1 creo l'IED al rispettivo marcatore (IED_LIBERA_1,IED_LIBERA_2,IED_LIBERA_3 ecc) ************************* impostare posizione IED!!!!!!!
+;------------------------------------
+
+	_IED1 = floor(random 2);
+~0.5
+	if (_IED1 == 1) then {IEDBomb1 = "IEDLandBig_F" createVehicle getPos IED_LIBERA_1};
+
+	_IED2 = floor(random 2);
+~0.5
+	if (_IED2 == 1) then {IEDBomb2 = "IEDLandBig_F" createVehicle getPos IED_LIBERA_2};	
+
+	_IED3 = floor(random 2);
+~0.5
+	if (_IED3 == 1) then {IEDBomb3 = "IEDLandBig_F" createVehicle getPos IED_LIBERA_3};
+
+	_IED4 = floor(random 2);
+~0.5
+	if (_IED4 == 1) then {IEDBomb4 = "IEDLandBig_F" createVehicle getPos IED_LIBERA_4};
+
+
+;------------------------------------
+;imposto il trigger di presenza della blufor
+;------------------------------------
+	triggerblu = "";
+
+
+;------------------------------------
+;imposto il trigger di presenza della opfor
+;------------------------------------
+	triggerop = "";
+
+
+;------------------------------------
+;controllo che blufor sia dentro nel trigger di attivazione
+;------------------------------------
+#checkattivazione
+	if (triggerActivated triggerblu) then {goto "contabluinmissione"};
+	~3
+	goto "checkattivazione";
+
+
+;------------------------------------
+;conta quante unità sono presenti nella missione e stabilisci la difficoltà
+;------------------------------------
+#contabluinmissione
+	_totblufor = {alive _x && side _x == WEST} count list triggercountblu;
+	if (_totblufor < 3) then {difficolta = 1};
+	if (_totblufor < 5) then {difficolta = 2};
+	if (_totblufor > 4) then {difficolta = 3};
+	if (_sidenemico== "RUS") then {goto "spawnrussi"}; **************************
+	if (_sidenemico== "RIB") then {goto "spawnribelli"}; **************************
+
+
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+;------------------------------------
+;------------------------------------
+;------------------------------------
+; SPAWN LATO RUSSI
+;------------------------------------
+;------------------------------------
+;------------------------------------
+#spawnrussi
+
+
+;------------------------------------
+;spawno la fanteria mobile RUSSI
+;------------------------------------
+#spawnfanteriarussi
+;********************** spawnare prima trance di nemici x5
+;********************** spawnare prima trance di nemici x6
+;********************** spawnare prima trance di nemici x5
+
+;conta quanti giocatori (player + AI) sono presenti nel trigger triggercountblu : http://www.armaholic.com/forums.php?m=posts&q=31899
+	_totblufor = {alive _x && side _x == WEST} count list triggercountblu;
+
+;definisco se aggiungere altre unità di fanteria in funzione del n° blufor presenti nell'area
+	if (_totblufor <5) then {goto "spawnfanteriastaticaRUSSI"};
+;altrimenti
+;********************** spawnare prima trance di nemici x9
+	if (_totblufor <10) then {goto "spawnfanteriastaticaRUSSI"};
+;altrimenti
+;********************** spawnare prima trance di nemici x12
+
+
+;------------------------------------
+;spawno la fanteria statica
+;------------------------------------
+#spawnfanteriastaticaRUSSI
+;********************** spawnare fanteria statica
+
+
+;------------------------------------
+;spawno i mezzi statici
+;------------------------------------
+#spawnmezzistaticiRUSSI
+;********************** spawnare jeep con mitra
+;definisco se aggiungere altri mezzi in funzione del n° blufor presenti nell'area
+	if (_totblufor <4) then {goto "taskmissioneRUSSI"};
+;********************** spawnare seconda jeep
+	if (_totblufor <6) then {goto "taskmissioneRUSSI"};
+;********************** spawnare antiaerea
+	if (_totblufor <8) then {goto "taskmissioneRUSSI"};
+;********************** spawnare carro
+
+
+;------------------------------------
+;imposto gli obiettivi e ne imposto le variabili
+;------------------------------------
+#taskmissioneRUSSI
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+[west,["task_liberaxxxxxxxxxxxx"],["I russi hanno conquistato xxxxx. Dovete liberare la città","Libera la città","cookiemarker"],getmarkerpos "xxxxx",1,2,true] call BIS_fnc_taskCreate;
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+;creo il task della missione ********************************************************************** definire nome del tast e marker!!!!!!!!!!!!!!
+[west,["task_distruggiantennaxxxxxxxxxxxx"],["La nostra intelligence ci ha informati di un campo base russo costruito nella città di xxxxx. Probabilmente dirigono parte della loro missione. In quel campo troverete un antenna di comunicazione, se la distruggerete, i russi avranno difficoltà a chiamare rinforzi","Elimina l'antenna","cookiemarker"],getmarkerpos "xxxxx",1,2,true] call BIS_fnc_taskCreate;
+
+;imposto la variabile dell'antenna 
+antcomdistrutta_001= 0;
+
+;avvio lo script che crea e verifica se l'antenna x è distrutta (se distrutta la variabile antcomdistrutta_001 diventa uguale a 1).. se la variabile = 2 invece elimina definitivamente l'oggetto antenna
+[antenna_001,_obj1] exec "4thSOGCD_missions\mission_checkantenna_1.sqs";
+
+
+;------------------------------------
+;------------------------------------
+;------------------------------------
+; SPAWN LATO RIBELLI
+;------------------------------------
+;------------------------------------
+;------------------------------------
+#spawnribelli
+
+
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+;------------------------------------
+;------------------------------------
+;------------------------------------
+;controllo lo stato della missione RUS (se opfor sotto un certo numero e antenna è attiva fai arrivare rinforzi)
+;------------------------------------
+;------------------------------------
+;------------------------------------
+#missioncheckRUS
+;conta quanti opfor ci sono nell'area
+_totopfor = {alive _x && side _x == EAST} count list _triggerop;
+;se opfor < 8 attiva e antenna non è distrutta allora fai arrivare rinforzi aerei
+
+~5
+goto "missioncheckRUS";
+
+
+;------------------------------------
+;------------------------------------
+;------------------------------------
+;controllo lo stato della missione RIB (se opfor sotto un certo numero fai arrivare rinforzi)
+;------------------------------------
+;------------------------------------
+;------------------------------------
+#missioncheckRIB
+;conta quanti opfor ci sono nell'area
+_totopfor = {alive _x && side _x == EAST} count list _triggerop;
+;se opfor < 8 attiva e antenna non è distrutta allora fai arrivare rinforzi aerei
+
+~5
+goto "missioncheckRIB";
+
+
+;------------------------------------
+;oggetti da rimuovere
+;------------------------------------
+	deletevehiche IEDBomb1;
+	deletevehiche IEDBomb2;
+	deletevehiche IEDBomb3;
+	deletevehiche IEDBomb4;
+; rimuovere oggetti statici **************************************************** (farlo da script esterno)
+exit

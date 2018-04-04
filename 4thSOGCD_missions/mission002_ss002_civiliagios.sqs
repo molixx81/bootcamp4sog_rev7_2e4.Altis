@@ -1,0 +1,28 @@
+;-------------------------
+;mission002_ss002_civiliagios.sqs
+; spawna civili ad agios
+;-------------------------
+
+exit 
+
+;**************************** eliminare
+
+
+
+#loopcrea
+if (triggerActivated tr_agios_civili) then {goto "spawncivili"};
+~2
+goto "loopcrea";
+
+;creo i civili una volta che blu sono nel trigger ID 23
+#spawncivili
+;[tr_agios_civili, 0, 500, [true, false], [false, false, false], false, [25,0], [4,0], 0.6, nil, nil, 23, true, true, ["ALL"]] execVM "LV\militarize.sqf";
+
+#loopremove
+if !(triggerActivated tr_agios_civili) then {goto "rimuovicivili"};
+~2
+goto "loopremove";
+
+#rimuovicivili
+[LVgroup23] execVM "LV\LV_functions\LV_fnc_removeGroup.sqf";
+goto "loopcrea";

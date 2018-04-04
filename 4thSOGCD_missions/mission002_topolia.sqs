@@ -1,0 +1,490 @@
+;-----------------------------------------------
+;missione 002
+;consegna munizioni ad avamposto NATO delocalizzato
+;-----------------------------------------------
+
+;imposto le variabili che arrivano dall'editor
+;variabile inerente al trasporto munizioni sull'obiettivo: 0 non ancora arrivato (missione in corso), 1 arrivato (missione terminata), 2 è stato distrutto (missione fallita)
+trasportoinzona_002_a = 0;
+
+
+;imposto le variabili che arrivano dagli altri script
+; = 1 se è stato ripulito (vedi script missioneIED)
+checksettoreA002= 0;
+checksettoreB002= 0;
+;= 1 se è stato fatto eplodere da EAST (vedi script missioneIED)
+esplosioneIED002= 0
+
+
+;mostro i marker sulla mappa che riguardano il percorso da seguire
+"ARROW_002_1" setMarkerAlpha 1;
+"ARROW_002_2" setMarkerAlpha 1;
+"ARROW_002_3" setMarkerAlpha 1;
+"ARROW_002_4" setMarkerAlpha 1;
+"ARROW_002_5" setMarkerAlpha 1;
+"ARROW_002_6" setMarkerAlpha 1;
+"ARROW_002_7" setMarkerAlpha 1;
+"ARROW_002_8" setMarkerAlpha 1;
+"ARROW_002_9" setMarkerAlpha 1;
+"ARROW_002_10" setMarkerAlpha 1;
+"ARROW_002_11" setMarkerAlpha 1;
+"ARROW_002_12" setMarkerAlpha 1;
+"ARROW_002_13" setMarkerAlpha 1;
+"BANDIERA_002_1" setMarkerAlpha 1;
+"start_002_1" setMarkerAlpha 1;
+"BANDIERA_002_1" setMarkerAlpha 1;
+
+;mostro i marker sulla mappa che riguardano il confine di guerra
+"marker002indicazioni_1" setMarkerAlpha 1;
+"marker002indicazioni_2" setMarkerAlpha 1;
+"marker002indicazioni_3" setMarkerAlpha 1;
+"marker002indicazioni_4" setMarkerAlpha 1;
+"marker002indicazioni_5" setMarkerAlpha 1;
+"marker002indicazioni_6" setMarkerAlpha 1;
+"marker002indicazioni_7" setMarkerAlpha 1;
+"marker002indicazioni_8" setMarkerAlpha 1;
+"marker002indicazioni_9" setMarkerAlpha 1;
+"marker002indicazioni_10" setMarkerAlpha 1;
+"marker002indicazioni_11" setMarkerAlpha 1;
+"marker002indicazioni_12" setMarkerAlpha 1;
+"marker002indicazioni_13" setMarkerAlpha 1;
+"marker002indicazioni_14" setMarkerAlpha 1;
+"marker002indicazioni_15" setMarkerAlpha 1;
+"marker002indicazioni_16" setMarkerAlpha 1;
+"marker002indicazioni_17" setMarkerAlpha 1;
+"marker002indicazioni_18" setMarkerAlpha 1;
+"marker002indicazioni_19" setMarkerAlpha 1;
+"marker002indicazioni_20" setMarkerAlpha 1;
+"marker002indicazioni_21" setMarkerAlpha 1;
+
+
+; creo il veicolo necessario per la missione
+HEMTT = "rhsusf_M977A4_AMMO_BKIT_M2_usarmy_d" createVehicle getMarkerPos "start_002_1";
+HEMTT setdir 135;
+
+;creo il task della missione e lo stabilisco su trig002cararriv (FOB)
+[west,["task_scorta"],["I rapporti tra le fazioni sulla linea di confine sono sempre più tesi. Ci sono stati diversi raid RUSSI che hanno costretto la NATO ad indietreggiare fino a sud di Topolia, dove un avamposto NATO è in fase di ampliamento. Stabilisci un convoglio e porta i rifornimenti all'avamposto Golf","Scorta","cookiemarker"],getmarkerpos "BANDIERA_002_1",1,2,true] call BIS_fnc_taskCreate;
+
+;creo l'ordigno IED sul trigger_002_13
+IEDBomb = "IEDLandBig_F" createVehicle getPos trigger_002_13;
+
+;imposto i secondi di pausa tra la creazione degli oggetti e la creazione degli script che gestiscono i trigger
+~5
+;avvio lo script di inizio marcia
+[] exec "4thSOGCD_missions\mission002_ss002_iniziomarcia.sqs";
+
+;avvio lo script di rilevamento/esplosione IED (triger trigger_002_13)
+[] exec "4thSOGCD_missions\mission002_ss001_esplosioneIED.sqs";
+
+;avvio lo script di posizionamento vicino all'IED (trigger_002_14) che fà partire missione secondaria
+[] exec "4thSOGCD_missions\mission002_ss002_missioneIED.sqs";
+
+;avvio lo script di lakka
+[] exec "4thSOGCD_missions\mission002_ss002_missioneLAKKA.sqs";
+
+;avvio lo script che mi crea i civili ad Agios Dionysios
+[] exec "4thSOGCD_missions\mission002_ss002_civiliagios.sqs";
+
+;avvio lo script che mi crea la fob Golf quando è nel trigger trg002FOBGolf
+[] exec "4thSOGCD_missions\mission002_ss002_spawnFOBGolf.sqs";
+;avvio il loop che mi consente di capire lo stato della missione di consegna cargo e se il cargo è integro
+;--------------------
+#checkmissionecargo
+;--------------------
+
+;aspetto dal trigger dell'editor che la variabile trasportoinzona_002_a = 1 e poi le confronto con quelle della missione secondaria
+if (trasportoinzona_002_a == 1) then {goto "missionecargocompletata"};
+
+;se il cargo è stato distrutto, imposto la variabile trasportoinzona_002_a = 2 cosi anche gli altri script sanno che è stato distrutto e vai a missione fallita
+if (! alive HEMTT) then {trasportoinzona_002_a = 2; goto "missionecargofallita"};
+
+~10
+
+goto "checkmissionecargo";
+
+;missione fallita nel caso il cargo dovesse saltare prima della consegna
+;--------------------
+#missionecargofallita
+;--------------------
+
+;imposto il task su failed
+
+["task_scorta", "FAILED",true] spawn BIS_fnc_taskSetState;
+
+~4
+
+;imposto la variabile =1 cosi il server_client.sqs mi fà parlare le unità in caso di multiplayer
+variabile_parlato = 1;
+publicVariable "variabile_parlato";
+
+[west, "Base"] sideChat "Avete fallito la missione, ritornate in base";
+
+goto "endscript";
+
+
+;nel caso la missione è completata, mostra avviso di successo e vai avanti con la missione
+;--------------------
+#missionecargocompletata
+;--------------------
+
+"ARROW_002_1" setMarkerAlpha 0;
+"ARROW_002_2" setMarkerAlpha 0;
+"ARROW_002_3" setMarkerAlpha 0;
+"ARROW_002_4" setMarkerAlpha 0;
+"ARROW_002_5" setMarkerAlpha 0;
+"ARROW_002_6" setMarkerAlpha 0;
+"ARROW_002_7" setMarkerAlpha 0;
+"ARROW_002_8" setMarkerAlpha 0;
+"ARROW_002_9" setMarkerAlpha 0;
+"ARROW_002_10" setMarkerAlpha 0;
+"ARROW_002_11" setMarkerAlpha 0;
+"ARROW_002_12" setMarkerAlpha 0;
+"ARROW_002_13" setMarkerAlpha 0;
+"BANDIERA_002_1" setMarkerAlpha 0;
+"start_002_1" setMarkerAlpha 0;
+
+;chiudo il task della missione primaria
+["task_scorta", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+~2
+variabile_parlato = 2;
+publicVariable "variabile_parlato";
+
+[west, "Base"] sideChat "Ottimo lavoro squadra, avete portato a termine l'obiettivo!";
+~1
+[west, "Base"] sideChat "Vi aspettiamo in base. Chiudo";
+~30
+[west, "Base"] sideChat "Squadra contrordine: ci informano che abbiamo perso il contatto con la squadra Delta.";
+~2
+[west, "Base"] sideChat "Rimanete in attesa fino ad ulteriori istruzioni. Nel frattempo riorganizzatevi.";
+~90
+[west, "Base"] sideChat "La squadra Delta stava trasportando carburante alla FOB Golf quando ad un certo punto si sono perse le tracce";
+~2
+[west, "Base"] sideChat "Vi indico sulla mappa il loro vettore. Procedete in senso contrario e aggiornateci sulla situazione.";
+
+;aggiungo il task "trova squadra delta";
+[west,["task_squadrade"],["La squadra delta stava portando rifornimenti all'avamposto Golf. Si sono perse le tracce. Segui al contrario il loro percorso e indaga sull'accaduto","Indaga","cookiemarker"],getmarkerpos "mkr002_delta",1,2,true] call BIS_fnc_taskCreate;
+
+"freccia_delta_1" setMarkerAlpha 1;
+"freccia_delta_2" setMarkerAlpha 1;
+"freccia_delta_3" setMarkerAlpha 1;
+"freccia_delta_4" setMarkerAlpha 1;
+"freccia_delta_5" setMarkerAlpha 1;
+"freccia_delta_6" setMarkerAlpha 1;
+"freccia_delta_7" setMarkerAlpha 1;
+"freccia_delta_8" setMarkerAlpha 1;
+"freccia_delta_9" setMarkerAlpha 1;
+"freccia_delta_10" setMarkerAlpha 1;
+"freccia_delta_11" setMarkerAlpha 1;
+"freccia_delta_12" setMarkerAlpha 1;
+"freccia_delta_13" setMarkerAlpha 1;
+"freccia_delta_14" setMarkerAlpha 1;
+"freccia_delta_15" setMarkerAlpha 1;
+"freccia_delta_16" setMarkerAlpha 1;
+"freccia_delta_17" setMarkerAlpha 1;
+"freccia_delta_18" setMarkerAlpha 1;
+
+#checkforzonaguerra
+if (triggerActivated trigger002_zonaguerra) then {goto "zonaguerra"};
+~1
+goto "checkforzonaguerra";
+
+#zonaguerra
+variabile_parlato = 3;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Squadre occhi aperti, siete in piena area di guerra!";
+
+;spawno la fanteria NATO morta
+	_gpr002natmort = createGroup WEST;   
+	natomorto002_1 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_1",[],0,"NONE"];  
+	natomorto002_1 setdamage 1;
+
+	natomorto002_2 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_2",[],0,"NONE"];  
+	natomorto002_2 setdamage 1;
+
+	natomorto002_3 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_3",[],0,"NONE"];  
+	natomorto002_3 setdamage 1;
+
+	natomorto002_4 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_4",[],0,"NONE"];  
+	natomorto002_4 setdamage 1;
+
+	natomorto002_5 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_5",[],0,"NONE"];  
+	natomorto002_5 setdamage 1;
+
+	natomorto002_6 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_6",[],0,"NONE"];  
+	natomorto002_6 setdamage 1;
+
+	natomorto002_7 = _gpr002natmort createUnit ["rhsusf_army_ucp_rifleman_m16",getmarkerpos "marker002_natomorto_7",[],0,"NONE"];  
+	natomorto002_7 setdamage 1;
+
+;spawno l hammer nato
+	natomorto002_8 = "rhsusf_m1025_w_m2" createVehicle getMarkerPos "marker002_natomorto_8" ;
+	natomorto002_8 setdir 280;
+	natomorto002_8 setdamage 1;
+
+;spawno il veicolo carburante nato da portare in salvo
+
+	carburante002_truck = "rhsusf_M978A4_BKIT_usarmy_wd" createVehicle getMarkerPos "marker002_obiettivocargocarburante" ;
+	carburante002_truck setdir 270;
+
+;spawno la jeep RUS
+	_jeeprus002A = "rhs_tigr_sts_3camo_vmf" createVehicle getMarkerPos "mark002_spawnrus_4" ;
+	_jeeprus002A setdir 225;
+;spawno il suo gunner
+	_gpr002rusa = createGroup EAST;   
+	rus002a = _gpr002rusa createUnit ["rhs_vmf_recon_rifleman",getmarkerpos "mark002_spawnrus_4",[],0,"NONE"];  
+	rus002a moveingunner _jeeprus002A;
+	rus002a setdir 0;
+	rus002a setformdir 0; 
+rus002a setskill ["aimingAccuracy",0.65];
+rus002a setskill ["aimingShake",1];
+rus002a setskill ["aimingSpeed",1]; 
+rus002a setskill ["endurance",1];
+rus002a setskill ["spotDistance",1];
+rus002a setskill ["spotTime",1];
+rus002a setskill ["courage",1];
+rus002a setskill ["reloadSpeed",1];
+rus002a setskill ["commanding",1];
+rus002a setcombatmode "RED";
+rus002a setBehaviour "AWARE;
+
+;spawno il tipo di guardia1
+	_gpr002rusb = createGroup EAST;   
+	rus002b = _gpr002rusb createUnit ["rhs_vmf_recon_rifleman",getmarkerpos "mark002_spawnrus_2",[],0,"NONE"];
+	rus002b setdir 0;
+	rus002b setformdir 0; 
+rus002b setskill ["aimingAccuracy",0.65];
+rus002b setskill ["aimingShake",1];
+rus002b setskill ["aimingSpeed",1]; 
+rus002b setskill ["endurance",1];
+rus002b setskill ["spotDistance",1];
+rus002b setskill ["spotTime",1];
+rus002b setskill ["courage",1];
+rus002b setskill ["reloadSpeed",1];
+rus002b setskill ["commanding",1];
+rus002b setcombatmode "RED";
+rus002b setBehaviour "AWARE;
+
+;spawno il tipo di guardia2
+	_gpr002rusc = createGroup EAST;   
+	rus002c = _gpr002rusc createUnit ["rhs_vmf_recon_rifleman",getmarkerpos "mark002_spawnrus_3",[],0,"NONE"];
+	rus002c setPos [getPos rus002c  select 0, getPos rus002c  select 1, 0.7];
+	rus002c setdir 270;
+	rus002c setformdir 270; 
+rus002c setskill ["aimingAccuracy",0.65];
+rus002c setskill ["aimingShake",1];
+rus002c setskill ["aimingSpeed",1]; 
+rus002c setskill ["endurance",1];
+rus002c setskill ["spotDistance",1];
+rus002c setskill ["spotTime",1];
+rus002c setskill ["courage",1];
+rus002c setskill ["reloadSpeed",1];
+rus002c setskill ["commanding",1];
+rus002c setcombatmode "RED";
+rus002c setBehaviour "AWARE;
+
+;spawno il tipo di guardia3
+	_gpr002rusd = createGroup EAST;   
+	rus002d = _gpr002rusd createUnit ["rhs_vmf_recon_rifleman",getmarkerpos "mark002_spawnrus_1",[],0,"NONE"];
+	rus002d setdir 180;
+	rus002d setformdir 180; 
+rus002d setskill ["aimingAccuracy",0.65];
+rus002d setskill ["aimingShake",1];
+rus002d setskill ["aimingSpeed",1]; 
+rus002d setskill ["endurance",1];
+rus002d setskill ["spotDistance",1];
+rus002d setskill ["spotTime",1];
+rus002d setskill ["courage",1];
+rus002d setskill ["reloadSpeed",1];
+rus002d setskill ["commanding",1];
+rus002d setcombatmode "RED";
+rus002d setBehaviour "AWARE;
+
+;spawno i russi tramite script su trigger002_delta ID = 9 ********************************
+	["marker002_natomorto_6",7,"RUS","grpre1_002_RUS","wp_002_RUS_1","wp_002_RUS_2","wp_002_RUS_3","wp_002_RUS_4","wp_002_RUS_5","COLUMNS","RED","AWARE"] exec "4thSOGCD_script\script_REB_spawn_fanteria_1.sqs";  
+
+
+#checkareaDelta
+if (triggerActivated trigger002_delta) then {goto "eastchopper"}; 
+~1
+goto "checkareaDelta";
+
+#eastchopper
+variabile_parlato = 4;
+publicVariable "variabile_parlato";
+; parlo del nuovo obiettivo
+[west, "Base"] sideChat "Dovete riportare sano e salvo quel carico di carburante alla FOB Golf";
+
+; cancello le freccie dei waypoint delta
+"freccia_delta_1" setMarkerAlpha 0;
+"freccia_delta_2" setMarkerAlpha 0;
+"freccia_delta_3" setMarkerAlpha 0;
+"freccia_delta_4" setMarkerAlpha 0;
+"freccia_delta_5" setMarkerAlpha 0;
+"freccia_delta_6" setMarkerAlpha 0;
+"freccia_delta_7" setMarkerAlpha 0;
+"freccia_delta_8" setMarkerAlpha 0;
+"freccia_delta_9" setMarkerAlpha 0;
+"freccia_delta_10" setMarkerAlpha 0;
+"freccia_delta_11" setMarkerAlpha 0;
+"freccia_delta_12" setMarkerAlpha 0;
+"freccia_delta_13" setMarkerAlpha 0;
+"freccia_delta_14" setMarkerAlpha 0;
+"freccia_delta_15" setMarkerAlpha 0;
+"freccia_delta_16" setMarkerAlpha 0;
+"freccia_delta_17" setMarkerAlpha 0;
+"freccia_delta_18" setMarkerAlpha 0;
+
+~2 
+
+; creo nuovo obiettivo e completo il precedente
+["task_squadrade", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+
+; mostro le freccie del nuovo obiettivo
+
+"mark002_riportacarb_1" setMarkerAlpha 1;
+"mark002_riportacarb_2" setMarkerAlpha 1;
+"mark002_riportacarb_3" setMarkerAlpha 1;
+"mark002_riportacarb_4" setMarkerAlpha 1;
+"mark002_riportacarb_5" setMarkerAlpha 1;
+"mark002_riportacarb_6" setMarkerAlpha 1;
+"mark002_riportacarb_7" setMarkerAlpha 1;
+"mark002_riportacarb_8" setMarkerAlpha 1;
+
+
+[west,["task_recupera"],["La squadra Delta è stata uccisa in un raid. Recupera il veicolo di trasporto carburante e scortalo fino alla FOB Golf sano e salvo!","Recupero","cookiemarker"],getmarkerpos "marker002_obiettivocargocarburante",1,2,true] call BIS_fnc_taskCreate;
+
+;spawno un elicottero EAST per lasciare le truppe da 002EASTdropA verso trigger002_delta ID10
+
+	["mkr002_delta","002EASTdropB","RHS_Mi8mt_Cargo_vdv",8,"grprusassaltoa","LINE","wp_002_RUS_1","wp_002_RUS_2","wp_002_RUS_3","wp_002_RUS_4","wp_002_RUS_5",1] exec "4thSOGCD_script\script_RUS_elicottero_rilascio_1.sqs";     
+
+~10
+
+;spawno un altro elicottero EAST per lasciare le truppe da 002EASTdropb verso trigger002_delta ID11
+
+	["mkr002_delta","002EASTdropA","RHS_Mi8mt_Cargo_vdv",8,"grprusassaltoa","LINE","wp_002_RUS_2","wp_002_RUS_3","wp_002_RUS_4","wp_002_RUS_5","wp_002_RUS_1",1] exec "4thSOGCD_script\script_RUS_elicottero_rilascio_1.sqs";     
+
+#missioncarburantecheck
+;controllo il finale della missione
+if !(alive carburante002_truck) then {goto "finalfail"};
+if (triggerActivated trigger002_parkcarburante) then {goto "finalsucces"};
+
+~10
+goto "missioncarburantecheck";
+
+#finalsucces
+~2
+["task_recupera", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+~2
+variabile_parlato = 5;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Complimenti! Avete fatto un ottimo lavoro!";
+~1
+[west, "Base"] sideChat "Vi attendiamo in base! Passo e chiudo";
+goto "endscript";
+
+#finalfail
+~2
+["task_recupera", "FAILED",true] spawn BIS_fnc_taskSetState;
+~5
+variabile_parlato = 6;
+publicVariable "variabile_parlato";
+
+[west, "Base"] sideChat "Avete fallito l'ultima parte della missione... Recuperate tutte le vostre cose e tornate in base!.";
+goto "endscript";
+
+#endscript
+
+hint "promemoria: eliminare tutte le unità";
+;nascondo tutti i marker
+"ARROW_002_1" setMarkerAlpha 1;
+"ARROW_002_2" setMarkerAlpha 1;
+"ARROW_002_3" setMarkerAlpha 1;
+"ARROW_002_4" setMarkerAlpha 1;
+"ARROW_002_5" setMarkerAlpha 1;
+"ARROW_002_6" setMarkerAlpha 1;
+"ARROW_002_7" setMarkerAlpha 1;
+"ARROW_002_8" setMarkerAlpha 1;
+"ARROW_002_9" setMarkerAlpha 1;
+"ARROW_002_10" setMarkerAlpha 1;
+"ARROW_002_11" setMarkerAlpha 1;
+"ARROW_002_12" setMarkerAlpha 1;
+"ARROW_002_13" setMarkerAlpha 1;
+"BANDIERA_002_1" setMarkerAlpha 1;
+"start_002_1" setMarkerAlpha 1;
+"BANDIERA_002_1" setMarkerAlpha 1;
+
+"freccia_delta_1" setMarkerAlpha 0;
+"freccia_delta_2" setMarkerAlpha 0;
+"freccia_delta_3" setMarkerAlpha 0;
+"freccia_delta_4" setMarkerAlpha 0;
+"freccia_delta_5" setMarkerAlpha 0;
+"freccia_delta_6" setMarkerAlpha 0;
+"freccia_delta_7" setMarkerAlpha 0;
+"freccia_delta_8" setMarkerAlpha 0;
+"freccia_delta_9" setMarkerAlpha 0;
+"freccia_delta_10" setMarkerAlpha 0;
+"freccia_delta_11" setMarkerAlpha 0;
+"freccia_delta_12" setMarkerAlpha 0;
+"freccia_delta_13" setMarkerAlpha 0;
+"freccia_delta_14" setMarkerAlpha 0;
+"freccia_delta_15" setMarkerAlpha 0;
+"freccia_delta_16" setMarkerAlpha 0;
+"freccia_delta_17" setMarkerAlpha 0;
+"freccia_delta_18" setMarkerAlpha 0;
+
+"mark002_riportacarb_1" setMarkerAlpha 0;
+"mark002_riportacarb_2" setMarkerAlpha 0;
+"mark002_riportacarb_3" setMarkerAlpha 0;
+"mark002_riportacarb_4" setMarkerAlpha 0;
+"mark002_riportacarb_5" setMarkerAlpha 0;
+"mark002_riportacarb_6" setMarkerAlpha 0;
+"mark002_riportacarb_7" setMarkerAlpha 0;
+"mark002_riportacarb_8" setMarkerAlpha 0;
+
+;nascondo i marker delle limitazioni di guerra
+"marker002indicazioni_1" setMarkerAlpha 0;
+"marker002indicazioni_2" setMarkerAlpha 0;
+"marker002indicazioni_3" setMarkerAlpha 0;
+"marker002indicazioni_4" setMarkerAlpha 0;
+"marker002indicazioni_5" setMarkerAlpha 0;
+"marker002indicazioni_6" setMarkerAlpha 0;
+"marker002indicazioni_7" setMarkerAlpha 0;
+"marker002indicazioni_8" setMarkerAlpha 0;
+"marker002indicazioni_9" setMarkerAlpha 0;
+"marker002indicazioni_10" setMarkerAlpha 0;
+"marker002indicazioni_11" setMarkerAlpha 0;
+"marker002indicazioni_12" setMarkerAlpha 0;
+"marker002indicazioni_13" setMarkerAlpha 0;
+"marker002indicazioni_14" setMarkerAlpha 0;
+"marker002indicazioni_15" setMarkerAlpha 0;
+"marker002indicazioni_16" setMarkerAlpha 0;
+"marker002indicazioni_17" setMarkerAlpha 0;
+"marker002indicazioni_18" setMarkerAlpha 0;
+"marker002indicazioni_19" setMarkerAlpha 0;
+"marker002indicazioni_20" setMarkerAlpha 0;
+"marker002indicazioni_21" setMarkerAlpha 0;
+
+;attendere 300 secondi
+~300
+;rimuovere tutti i veicoli generati dalla missione (i russi e i nato dell'operazione di recupero)
+
+deletevehicle natomorto002_1;
+deletevehicle natomorto002_2;
+deletevehicle natomorto002_3;
+deletevehicle natomorto002_4;
+deletevehicle natomorto002_5;
+deletevehicle natomorto002_6;
+deletevehicle natomorto002_7;
+deletevehicle natomorto002_8;
+deletevehicle carburante002_truck;
+deletevehicle _jeeprus002A
+deletevehicle rus002a
+deletevehicle rus002b
+deletevehicle rus002c
+deletevehicle rus002d
+Grpfant_1 = 1;
+trasportoVAR_1 = 1;
+	
+;rimuovo gli oggetti della FOB golf 
+	[] exec "4thSOGCD_missions\mission002_ss002_removeFOBGolf.sqs";
+exit;

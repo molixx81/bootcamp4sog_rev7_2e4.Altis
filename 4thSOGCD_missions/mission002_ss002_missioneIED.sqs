@@ -1,0 +1,204 @@
+;-----------------------------------------------
+;mission002_ss002_missioneIED.sqs -- verifica che attorno all'IED non ci sia un terrorista
+;Verifica ogni x secondi che Bluefor sia su un trigger (trigger_002_14)
+;-----------------------------------------------
+
+;assegno le variabili che verranno impostate dall'editor, per lo script
+;variabile waypoint elicottero
+wp1_002=0;
+;variabile raggiungimento del trasporto munizioni all'obiettivo
+trasportoinzona_002_a = 0;
+
+;assegno le variabili che vengono usate da altri script
+checksettoreA002= 0;
+checksettoreB002= 0;
+esplosioneIED002= 0;
+radioalphaattivato002 = 0;
+
+;eseguo lo script per controllare radio alpha
+[]exec "4thSOGCD_missions\mission002_ss002_radioalpha.sqs";
+
+;eseguo lo script per controllare radio alpha
+[]exec "4thSOGCD_missions\mission002_ss002_radioalpha_IED.sqs";
+
+;eseguo lo script per generare i ribelli che rimarrà attivo fino a quando le missioni non saranno completate, dopodichè eliminerà le unità
+[] exec "4thSOGCD_missions\mission002_ss002_spawnRibelliIED.sqs";
+
+;inizio la missione IED solo se ( gli operatori specializzati sono nel trigger trigger_002_14 e utilizzano radio alpha (variabile =1)) oppure (IED esplode)
+
+#inizioloopIEDtrovato
+if (radioalphaattivato002 == 1) then {goto "missioneConIEDril"};
+if (esplosioneIED002 == 1) then {goto "missioneConIEDesp"};
+~1
+
+goto "inizioloopIEDtrovato";
+
+;se blu è rimasto nel settore, allora attiva missione secondaria
+#missioneConIEDril
+
+;invio il primo messaggio 
+variabile_parlato = 9;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Ok, avete un IED davanti, attendete sulla strada fino ad ulteriori istruzioni. Passo";
+~5
+goto "IEDcontinua";
+
+#missioneConIEDesp
+~5
+variabile_parlato = 10;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Squadra tutto bene? Siete passati sopra un IED. Mantenete la posizione fino ad ulteriori ordini.";
+~5
+
+#IEDcontinua
+;invio il secondo messaggio
+variabile_parlato = 11;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Stiamo deviando il vettore di Cobra 2 sulla vostra area. Rimanete ancora in attesa. Passo";
+
+;creo l'elicottero_002 sul marker "spawn_002_1" e il pilota sull'elicottero_002 e lo mando in direzione trigger_002_elicotterowp1
+elicottero_002 = createVehicle ["RHS_AH64D_wd", getMarkerPos "spawn_002_1",[],0,"FLY"];
+elicottero_002 setPos [getPos elicottero_002  select 0, getPos elicottero_002  select 1, 50];
+_grppilota_002 = createGroup WEST;   
+pilota_002 = _grppilota_002 createUnit ["rhsusf_army_ucp_helicrew",(getmarkerpos "spawn_002_1" ),[],0,"NONE"];   
+pilota_002 moveindriver elicottero_002;
+_grppilota_002 move getpos trigger_002_elicotterowp1;
+_grppilota_002 setBehaviour "CARELESS";
+elicottero_002 setcaptive true;
+pilota_002 setcaptive true;
+
+;aspetto che l'elicottero_002 raggiunga la posizione trigger_002_elicotterowp1
+#aspettaelicotterowp1
+
+
+;quando l'elicottero_002 ha raggiunto il trigger_002_elicotterowp1, da editor si imposta la variabile wp1_002=1. quindi quando wp1_002=1; muovi elicottero_002 al waypoint 2 (trigger_002_elicotterowp2)
+if (wp1_002==1) then {goto "rimozioneelicottero";};
+~1
+
+goto "aspettaelicotterowp1"
+
+#rimozioneelicottero
+
+
+;invia l'elicottero al wp successivo ed esegui lo script che rileva l'arrivo dell'elicottero a destinazione, dopodichè cancelli tutto e termini lo script
+_grppilota_002 move getpos trigger_002_elicotterowp2;
+[] exec "4thSOGCD_missions\mission002_ss002_eliminazioneelicottero.sqs";
+
+~3
+;quando il elicottero_002 è distrutto prosegui con la missione secondaria
+#rilievo
+~5
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+
+variabile_parlato = 12;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat " Cobra 2 rileva col termico aclune persone appostate a 083159 e 086154 insieme ad una tecnica e a dei civili, supporto negato!";
+
+	
+~3
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+
+variabile_parlato = 13;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Queste persone possono essere collegate all'IED sulla strada.";
+
+~3
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto "#endscript"};
+
+variabile_parlato = 14;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Avete l'ordine di investigare ed eliminare eventualmente qualsiasi minaccia";
+~3
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+
+variabile_parlato = 15;
+publicVariable "variabile_parlato";
+[west, "Base"] sideChat "Badate al trasporto, non dimenticate che rimane il vostro obiettivo principale. Passo e chiudo";
+
+~5
+
+;creo i task della missione secondaria ai trigger trigger_002_16 e trigger_002_17
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+[west,["task_cerca1"],["Verifica ed eventualmente elimina le persone collegate all' IED","Verifica","cookiemarker"],getpos trigger_002_16,1,2,true] call BIS_fnc_taskCreate
+[west,["task_cerca2"],["Verifica ed eventualmente elimina le persone collegate all' IED","Verifica","cookiemarker"],getpos trigger_002_17,1,2,true] call BIS_fnc_taskCreate
+[west,["task_distruggiIED"],["Prima di passare da qui coi mezzi individua ed eventualmente elimina le persone collegate all' IED","Attenzione","cookiemarker"],getpos trigger_002_14,1,2,true] call BIS_fnc_taskCreate
+
+;creo tre script esterni che controllano rispettivamente l'esecuzione dei tre obiettivi
+;check trigger_002_16 pulizia
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+[] exec "4thSOGCD_missions\mission002_ss002_checkSettoreA.sqs";
+
+;se il cargo è distrutto, termina la missione
+if (trasportoinzona_002_a == 2) then {goto"#endscript"};
+;check trigger_002_17 pulizia
+[] exec "4thSOGCD_missions\mission002_ss002_checkSettoreB.sqs";
+
+;IED è già avviato
+
+#checkmissionisecondarie
+;check IED non esploso, stato missioni secondarie e missione di trasporto cargo
+
+;se tutte e tre le missioni sono andate a buon fine 
+if (esplosioneIED002==0 && checksettoreA002==1 && checksettoreB002==1) then {goto "endcompletato"};
+
+;se l'IED è esploso ma le due aree sono state ripulite 
+if (esplosioneIED002==1 && checksettoreA002==1 && checksettoreB002==1) then {goto "endcompletatoinparte"};
+
+;se il trasporto ha raggiunto la destinazione, e gli obiettivi di cui sopra non sono stati completati -> missione primaria compiuta e missione secondaria fallita
+if (trasportoinzona_002_a == 1) then {goto "endfallito"};
+
+;se il trasporto è stato distrutto, ricevo la variabile dallo script principale trasportoinzona_002_a == 2
+if (trasportoinzona_002_a == 2) then {goto "endfallito"};
+
+~5
+
+goto "checkmissionisecondarie";
+
+#endcompletato
+["task_cerca1", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+["task_cerca2", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+["task_distruggiIED", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+
+
+goto "endscript";
+
+#endcompletatoinparte
+["task_cerca1", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+["task_cerca2", "SUCCEEDED",true] spawn BIS_fnc_taskSetState;
+["task_distruggiIED", "FAILED",true] spawn BIS_fnc_taskSetState;
+goto "endscript";
+
+#endfallito
+["task_cerca1", "FAILED",true] spawn BIS_fnc_taskSetState;
+["task_cerca2", "FAILED",true] spawn BIS_fnc_taskSetState;
+["task_distruggiIED", "FAILED",true] spawn BIS_fnc_taskSetState;
+goto "endscript";
+
+
+#endscript
+
+if (triggerActivated trg002_blurebnonpres) then {goto "eliminazione"};
+~10
+goto "endscript";
+
+#eliminazione
+Grpfant_1 == 1;
+deletevehicle rebdetonatore_002;
+deletevehicle simpleObject_0;
+deletevehicle simpleObject_1;
+deletevehicle tecnica002;
+deletevehicle rebgunner_002;
+deletevehicle IEDBomb;
+
+exit

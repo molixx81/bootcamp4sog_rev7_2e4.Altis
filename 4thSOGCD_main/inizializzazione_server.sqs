@@ -1,0 +1,104 @@
+;-----------------------------------------------
+; 4thSOG Script per Combattimento Dinamico by Ricky & Molixx
+; For info visit US @ 4sog.it
+; REV 2.0
+;-----------------------------------------------
+
+;se non sei il server (o L'host) della missione, allora non eseguire questo script ma esegui "mission002_topolia_clientstart.sqs". In questa maniera soltanto il server Gestirà la 4thSOGCD con le missioni e solo lui imposterà le variabili dettate dallo script. Il client, tramite lo script inizializzazione_client.sqs rimarrà in attesa di alcune variabili globali dettate dal server per far compiere azioni ai client
+if !(isServer) then {goto "client"};
+
+;-----------------------------------------------
+;----------AREA DELLE CONFIGURAZIONI------------
+;-----------------------------------------------
+
+;definisco il numero di (missioni disponibili) +1. Mettere sempre il valore + 1 al numero totale di missioni perchè la funzione random parte da 0
+_TotaleMissioniDisponibili = 2;   
+
+;definisco se i supporti devono essere tracciati dai marker per vedere la loro posizione durante le operazioni di bombardamento. Se true verranno marcati, se false no
+_AttivaMarkerCAS = true;
+
+;definisco la difficoltà base che verrà aggiunta al numero dei giocatori online per aumentare o diminuire  il massimo dei nemici respawnati
+;DifficoltaGioco = 1;
+;************************************************************************************************************** al momento non disponibile. Implementare funzione Molix *****************
+
+;abilita lo spawn automatico dei veicoli richiesti dalla missione generata. Se true allora spawna i veicoli programmati altrimenti non spawnare (esisterà sempre l'area di spawn veicoli scelti dal giocatore)
+SpawnVeicoliMissione = true;
+;************************************************************************************************************** al momento non disponibile. Implementare funzione Molix *****************
+
+;abilita script punteggio squadra. Questo varia in funzione agli obiettivi completati, perdite subite, civili uccisi in azione. E' un punteggio che riguarda l'operato dell'intera squadra
+_abilitapunteggio = false; 
+;************************************************************************************************************** al momento non disponibile. Implementare funzione Molix *****************
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;-------NON TOCCARE LO SCRIPT SUCCESSIVO------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------------------------------------------------------------------------------------------
+
+;avvio i marker per segnalare i supporti CAS e trasporto
+if (_AttivaMarkerCAS) then {[] exec "4thSOGCD_script\script_marcatori_cas.sqs"};
+
+;questa variabile serve allo script per capire qual'è stata l'ultima missione giocata, si aggiorna automaticamente e serve a non ripetere nuovamente l'ultima missione appena giocata
+if (isServer) then {UltimaMissione = 0};
+
+;aspetto 5 secondi prima di avviare le missioni, così si definisce meglio anche il numero di player iniziali che definisce il numero di spawn nemici
+~5
+
+;-----------------------------------------------
+;---------GENERAZIONE DELLA MISSIONE------------
+;-----------------------------------------------
+#random
+~2
+
+;se il gioco è caricato su server (o singleplayer) imposta la variabile "missioneInCorso" = ad un numero random da 1 a x missioni disponibili, impostate nella variabile TotaleMissioniDisponibili
+;questa variabile rappresenta il numero di missione da avviare
+if (isServer) then  { MissioneInCorso = floor(random _TotaleMissioniDisponibili); };
+
+;se "MissioneInCorso" selezionata sopra a random è uguale alla variabile "UltimaMissione" allora torna al loop #random per selezionare un altra missione altrimenti procedi
+if (MissioneInCorso == UltimaMissione) then {goto "random"};
+
+;setto la variabile "UltimaMissione" = a "MissioneInCorso" per il suddetto obiettivo
+if (isServer) then {UltimaMissione = MissioneInCorso};
+
+;se MissioneInCorso = 0 torna al loop #random per assegnargli un altro valore
+if (MissioneInCorso == 0) then {goto "random"};
+
+;rendo pubblica la variabile scelta
+publicVariable "MissioneInCorso";
+
+;se MissioneInCorso = 1 esegui lo script per far partire la missione 001
+if (MissioneInCorso == 1) then {[] exec "4thSOGCD_missions\mission002_topolia.sqs"; goto "checkmission";};
+
+;se MissioneInCorso = 2 esegui lo script per far partire la missione 002
+;inserire istruzione
+
+;se MissioneInCorso = 3 esegui lo script per far partire la missione 003
+;inserire istruzione
+
+;-----------------------------------------------
+;---------------LOOP DI VERIFICA----------------
+;-----------------------------------------------
+;loop che verifica, ogni x secondi, la variabile MissioneInCorso, se diversa da 0, vuol dire che la missione è in corso, se è uguale a 0, vuol dire che lo script esterno della missione ha settato = 0 tale variabile (e cioè la missione è conclusa) 
+#checkmission
+
+;sistemare tempo di check status missione, ora impostato a 30 secondi per debug******************************************************************* molix *****************
+~30
+
+;se "MissioneInCorso" = 0, allora torna al loop #random per generare un altra missione
+	if (MissioneInCorso == 0) then {goto "random"};
+;se "MissioneInCorso" diverso da 0, allora torna al loop #checkmission e attenderà x secondi per riverificare lo stato della missione
+	if (MissioneInCorso != 0) then {goto "checkmission"}; 
+
+
+
+
+;*************************** cambiare questo punto quando si è verificato che funziona **************************************** molix *****************
+#client
+
+[] exec "4thSOGCD_main\inizializzazione_client.sqs";
+
+exit
+;*************************** cambiare questo punto quando si è verificato che funziona **************************************** molix *****************
+

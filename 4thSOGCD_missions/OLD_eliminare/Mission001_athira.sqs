@@ -1,0 +1,158 @@
+
+	_bunkernordovest = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [13887.527344,18883.498047,21.0148544]];
+	_bunkernordovest setVectorDirAndUp [[0.295242,-0.955421,-0.00189774],[0.0279918,0.0066645,0.999586]];
+
+	_bunkernordest = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [14123.164063,18895.763672,28.605631]];
+	_bunkernordest setVectorDirAndUp [[0.00635301,-0.99998,0],[0,0,1]];
+
+	_bunkerest = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [14374.339844,18571.71875,27.411713]];
+	_bunkerest setVectorDirAndUp [[-0.999797,0.00932274,-0.0178467],[-0.0186565,-0.0955512,0.99525]];
+
+	_bunkerest2 = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [14374.96582,18588.101563,27.960793]];
+	_bunkerest2 setVectorDirAndUp [[-0.999616,0.00828284,-0.0264532],[-0.0266655,-0.0266562,0.999289]];
+
+	_bunkersud = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_small_f.p3d', [14227.875977,18239.378906,18.924019]];
+	_bunkersud setVectorDirAndUp [[-0.521326,0.853208,0.0159856],[0.00666691,-0.0146598,0.99987]];
+	_barrasud = createSimpleObject ['a3\structures_f\walls\bargate_f.p3d', [14235.148438,18242.501953,22.0091362]];
+	_barrasud setVectorDirAndUp [[0.475609,-0.879657,0],[0,0,1]];
+	_sacchisud = createSimpleObject ['a3\structures_f\mil\bagfence\bagfence_round_f.p3d', [14240.517578,18244.908203,18.381519]];
+	_sacchisud setVectorDirAndUp [[-0.892361,0.45113,0.0131848],[0.00534085,-0.0186562,0.999812]];
+	_sacchisud = createSimpleObject ['a3\structures_f_argo\military\fortifications\sandbagbarricade_01_half_f.p3d', [14240.52832,18247.425781,18.678131]];
+	_sacchisud setVectorDirAndUp [[0.917415,0.397933,0],[0,0,1]];
+
+
+	_markerstr = createMarker ["Antenna",[14139,18646]];
+	_markerstr setMarkerShape "ICON";
+	_markerstr setMarkerType "hd_dot";
+	_antennaobiettivo = "Land_TTowerBig_2_F" createVehicle getMarkerPos "Antenna";
+	_antennaobiettivo setDamage 0.5;
+	_bunkerobiettivo1 = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_tower_f.p3d', [14150.380859,18675.712891,29.852055]];
+	_bunkerobiettivo1 setVectorDirAndUp [[0.985979,0.166872,0],[0,0,1]];
+	_bunkerobiettivo2 = createSimpleObject ['ca\misc3\fortified_nest_small.p3d', [14127.519531,18618.261719,27.435181]];
+	_bunkerobiettivo2 setVectorDirAndUp [[0.546373,0.837351,0.0178833],[0.0346375,-0.0439246,0.998434]];
+	_bunkerobiettivo3 = createSimpleObject ['a3\structures_f\mil\bagbunker\bagbunker_tower_f.p3d', [14176.173828,18664.25,29.687628]];
+	_bunkerobiettivo3 setVectorDirAndUp [[0.164755,-0.986335,0],[0,0,1]];
+
+
+
+
+	
+	_filospinato = createSimpleObject ['a3\structures_f\mil\fortification\razorwire_f.p3d', [14221.717773,18683.873047,28.778675]];
+	_filospinato setVectorDirAndUp [[0,0.998124,0.0612232],[0.0119906,-0.0612188,0.998052]];
+	_filospinato = createSimpleObject ['a3\structures_f\mil\fortification\razorwire_f.p3d', [14230.207031,18683.755859,28.666002]];
+	_filospinato setVectorDirAndUp [[0,0.998124,0.061218],[0.0133361,-0.0612125,0.998036]];
+	_filospinato = createSimpleObject ['a3\structures_f\mil\fortification\razorwire_f.p3d', [14238.40332,18682.572266,28.465336]];
+	_filospinato setVectorDirAndUp [[-0.243115,-0.968914,-0.0458395],[0.0186628,-0.0519209,0.998477]];
+	_tenda = createSimpleObject ['ca\misc_e\stan_east_ep1.p3d', [14157.310547,18642.828125,28.393898]];
+	_tenda setVectorDirAndUp [[-0.660878,-0.749548,-0.0376697],[-0.0373079,-0.0173195,0.999154]];
+	_tenda = createSimpleObject ['ca\misc_e\stan_east_ep1.p3d', [14149.0830078,18649.142578,28.309114]];
+	_tenda setVectorDirAndUp [[-0.661336,-0.749964,-0.0137533],[-0.00265204,-0.0159976,0.999869]];
+
+	_acquedotto = createSimpleObject ['a3\structures_f_exp\infrastructure\watersupply\watertower_01_f.p3d', [14128.798828,18813.580078,31.818058]];
+	_acquedotto setVectorDirAndUp [[0,1,0],[0,0,1]];
+
+
+
+
+
+
+
+
+
+
+	_fumo_0 = createSimpleObject ['ca\misc\empty.p3d', [14264.72168,18701.210938,28.894552]]; 
+	_fumo_0 setVectorDirAndUp [[0,0.997077,0.0764057],[-0.0302419,-0.0763707,0.996621]];
+	_fumo_0  = "test_EmptyObjectForFireBig" createVehicle position _fumo_0; 
+	_fumo_1 = createSimpleObject ['ca\misc\empty.p3d', [14243.913086,18686.322266,27.819593]];
+	_fumo_1 setVectorDirAndUp [[0,1,0],[0,0,1]];
+	_fumo_1  = "test_EmptyObjectForFireBig" createVehicle position _fumo_1; 
+
+	_fumo_2 = createSimpleObject ['ca\misc\empty.p3d', [14015.619141,18731.375,26.575087]];
+	_fumo_2  setVectorDirAndUp [[0,0.997077,0.0764057],[-0.0302419,-0.0763707,0.996621]];
+	_fumo_2  = "test_EmptyObjectForFireBig" createVehicle position _fumo_2; 
+
+	_fumo_3  = createSimpleObject ['ca\misc\empty.p3d', [13964.192383,18748.841797,26.876846]];
+	_fumo_3  setVectorDirAndUp [[0,0.997077,0.0764057],[-0.0302419,-0.0763707,0.996621]];
+	_fumo_3  = "test_EmptyObjectForFireBig" createVehicle position _fumo_3; 
+
+	_fumo_4 = createSimpleObject ['ca\misc\empty.p3d', [14011.539063,18586.841797,22.562006]];
+	_fumo_4 setVectorDirAndUp [[0,0.997077,0.0764057],[-0.0302419,-0.0763707,0.996621]];
+	_fumo_4  = "test_EmptyObjectForFireBig" createVehicle position _fumo_4; 
+
+	_fumo_5 = createSimpleObject ['ca\misc\empty.p3d', [14046.568359,18382.765625,18.880112]];
+	_fumo_5 setVectorDirAndUp [[0,0.997077,0.0764057],[-0.0302419,-0.0763707,0.996621]];
+	_fumo_5  = "test_EmptyObjectForFireBig" createVehicle position _fumo_5; 
+
+
+
+
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkersud ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 170;  
+	_soldier setformdir 170; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkerest ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 110;  
+	_soldier setformdir 110; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkernordest ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 45;  
+	_soldier setformdir 45; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkernordovest ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 358;  
+	_soldier setformdir 358; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkerobiettivo1 ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 2]
+	_soldier setdir 358;  
+	_soldier setformdir 358; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkerobiettivo1 ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 358+90;  
+	_soldier setformdir 358+90; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkerobiettivo2 ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 358+180;  
+	_soldier setformdir 358+180; 
+
+	_cnt = createCenter EAST;  
+	_grp = createGroup EAST;   
+	_soldier = _grp createUnit ["O_G_Soldier_AR_F",(getpos _bunkerobiettivo3 ),[],0,"NONE"];   
+	_soldier setPos [getPos _soldier  select 0, getPos _soldier  select 1, 0]
+	_soldier setdir 358+45;  
+	_soldier setformdir 358+45; 
+
+
+
+
+#checkmission
+
+if (not alive _antennaobiettivo) then {goto "final"};
+~ 10
+goto "checkmission";
+
+#final
+MissioneInCorso=0;
+hint "Missione compiuta!";
+exit

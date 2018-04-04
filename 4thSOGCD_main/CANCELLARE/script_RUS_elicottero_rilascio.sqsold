@@ -1,0 +1,201 @@
+;--------------------------------
+; Spawna un elicottero per rilasciare N unità atterrando by Molixx
+; Ordina successivamente alle unità rilasciate di seguire 5 Marker (4 di direzione 1 di waypoint ciclico)
+; Rev. 1.0 del 26/03/2018
+;--------------------------------
+
+
+;--------------------------------
+; esempio: ["spawn","rilascio","class",8,"grpassalto","LINE","wp_1","wp_2","wp_3","wp_4","wp_5",] exec "script_RUS_elicottero_rilascio.sqs";     
+; "spawn" = nome del marker sulla quale spawno l'elicottero
+; "rilascio" = nome del marker sulla quale l'elicottero atterra per scaricare le unità 
+; "class"    = classe dell'elicottero utilizzato come trasporto. Utilizzare SOLAMENTE veicoli dell' EAST!!!!
+; 8          = numero delle unità trasportate (da 1 fino a 12, le classi sono impostate all'interno di questo script e controllate la capacità max dell'elicottero prima, altrimenti le unità in eccesso rimangono a piedi)
+; "grp"   = nome del gruppo scaricato dall'elicottero, serve per dare gli ordini ed eventualmente per la cancellazione
+; "WP_1"     = nome del marker sulla mappa corrispondente al 1° waypoint che le unità scaricate percorreranno
+; "WP_2"     = nome del marker sulla mappa corrispondente al 2° waypoint che le unità scaricate percorreranno
+; "WP_3"     = nome del marker sulla mappa corrispondente al 3° waypoint che le unità scaricate percorreranno
+; "WP_4"     = nome del marker sulla mappa corrispondente al 4° waypoint che le unità scaricate percorreranno
+; "WP_5"     = nome del marker sulla mappa corrispondente al 5° waypoint che le unità scaricate percorreranno
+;--------------------------------
+
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawn = _this select 0;
+	_rilascio = _this select 1;
+	_heliclass = _this select 2;
+	_nunita = _this select 3;
+	_grp = _this select 4;
+	_formation = _this select 5;
+	_WP1 = _this select 6;
+	_WP2 = _this select 7;
+	_WP3 = _this select 8;
+	_WP4 = _this select 9;
+	_WP5 = _this select 10;
+
+
+;---------------------------------------
+; Imposto le classi negli slots delle unità trasportate
+;---------------------------------------
+
+;******************************** impostare russi!!!!!!! ********************************************
+	_slot1 = "LOP_BH_Infantry_Rifleman";
+	_slot2 = "LOP_BH_Infantry_AR_Asst";
+	_slot3 = "LOP_BH_Infantry_AT";
+	_slot4 = "LOP_BH_Infantry_AR";
+	_slot5 = "LOP_BH_Infantry_Corpsman";
+	_slot6 = "LOP_BH_Infantry_Rifleman";
+	_slot7 = "LOP_BH_Infantry_AR_Asst";
+	_slot8 = "LOP_BH_Infantry_AT";
+	_slot9 = "LOP_BH_Infantry_AR";
+	_slot10 = "LOP_BH_Infantry_Rifleman";
+	_slot11 = "LOP_BH_Infantry_Corpsman";
+	_slot12 = "LOP_BH_Infantry_AR";
+
+
+;---------------------------------------
+; Creo l'elicottero e il suo equipaggio 
+;---------------------------------------
+_elicottero = createVehicle [_heliclass, getMarkerPos _rilascio,[],0,"FLY"];
+_elicottero setPos [getPos _elicottero  select 0, getPos _elicottero  select 1, 50];
+
+_grppilota = createGroup EAST;   
+_pilota = _grppilota createUnit ["rhsusf_army_ucp_helicrew",(getmarkerpos _rilascio ),[],0,"NONE"];   
+_pilota moveindriver _elicottero;
+_grppilota setBehaviour "CARELESS";
+_grppilota setcaptive true;
+_pilota setcaptive true;
+
+
+;---------------------------------------
+; Creo le unità trasportate
+;---------------------------------------	
+	_grp = createGroup EAST;   
+
+	_rusgunner_001 = _grp createUnit [_slot1,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	if (_nunita==1) then {goto "formazione"};
+
+	_rusgunner_002 = _grp createUnit [_slot2,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_002] join _rusgunner_001;
+	if (_nunita==2) then {goto "formazione"};
+
+	_rusgunner_003 = _grp createUnit [_slot3,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_003] join _rusgunner_001;
+	if (_nunita==3) then {goto "formazione"};
+
+	_rusgunner_004 = _grp createUnit [_slot4,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_004] join _rusgunner_001;
+	if (_nunita==4) then {goto "formazione"};
+
+	_rusgunner_005 = _grp createUnit [_slot5,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_005] join _rusgunner_001;
+	if (_nunita==5) then {goto "formazione"};
+
+	_rusgunner_006 = _grp createUnit [_slot6,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_006] join _rusgunner_001;
+	if (_nunita==6) then {goto "formazione"};
+
+	_rusgunner_007 = _grp createUnit [_slot7,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_007] join _rusgunner_001;
+	if (_nunita==7) then {goto "formazione"};
+
+	_rusgunner_008 = _grp createUnit [_slot8,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_008] join _rusgunner_001;
+	if (_nunita==8) then {goto "formazione"};
+
+	_rusgunner_009 = _grp createUnit [_slot9,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_009] join _rusgunner_001;
+	if (_nunita==9) then {goto "formazione"};
+
+	_rusgunner_010 = _grp createUnit [_slot10,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_010] join _rusgunner_001;
+	if (_nunita==10) then {goto "formazione"};
+
+	_rusgunner_011 = _grp createUnit [_slot11,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_011] join _rusgunner_001;
+	if (_nunita==11) then {goto "formazione"};
+
+	_rusgunner_012 = _grp createUnit [_slot12,getmarkerpos _spawnpos,[],10,"FORM"]; 
+	[_rusgunner_012] join _rusgunner_001;
+
+
+#formazione
+;---------------------------------------
+; setto le skill per le AI spawnate
+;---------------------------------------
+_grp setFormation _formation;
+
+
+;---------------------------------------
+; imposto il waypoint di scarico al gruppo dell'elicottero
+;---------------------------------------
+_waypointeli1 = _grppilota addWaypoint [getmarkerpos _rilascio, 0];
+_waypointeli1 setWaypointType "UNLOAD";
+;_waypointeli1 setWaypointSpeed "LIMITED";
+
+
+;---------------------------------------
+; imposto il waypoint di uscita al gruppo dell'elicottero, quello in cui l'elicottero sparirà
+;---------------------------------------
+_waypointeli2 = _grppilota addWaypoint [getmarkerpos _spawn, 0];
+_waypointeli2 setWaypointType "UNLOAD";
+;_waypointeli2 setWaypointSpeed "LIMITED";
+;****************************************** aggiungere che quando è arrivato al waypoint deve essere eliminato insieme all'equipaggio ************* molix
+;new_wp setWaypointStatements ["true", "hint 'hello'; hint 'goodbye'"];
+
+
+#waypoint
+;---------------------------------------
+; imposto i waypoint del gruppo trasportato
+;---------------------------------------
+_waypoint0 = _grp addWaypoint [getmarkerpos _rilascio, 0];
+_waypoint0 setWaypointType "MOVE";
+;_waypoint0 setWaypointSpeed "LIMITED";
+
+_waypoint1 = _grp addWaypoint [getmarkerpos _WP1, 0];
+_waypoint1 setWaypointType "MOVE";
+;_waypoint1 setWaypointSpeed "LIMITED";
+;_waypoint setWaypointBehaviour "SAFE";
+;_waypoint setWaypointType "FOLLOW";
+
+_waypoint2 = _grp addWaypoint [getmarkerpos _WP2, 0];
+_waypoint2 setWaypointType "MOVE";
+;_waypoint2 setWaypointSpeed "LIMITED";
+
+_waypoint3 = _grp addWaypoint [getmarkerpos _WP3, 0];
+_waypoint3 setWaypointType "MOVE";
+;_waypoint3 setWaypointSpeed "LIMITED";
+
+_waypoint4 = _grp addWaypoint [getmarkerpos _WP4, 0];
+_waypoint4 setWaypointType "MOVE";
+;_waypoint4 setWaypointSpeed "LIMITED";
+;_waypoint4 setWaypointStatements ["true", "hint 'cicla'"];
+
+_waypoint5 = _grp addWaypoint [getmarkerpos _WP5, 0];
+_waypoint5 setWaypointType "CYCLE";
+
+
+
+
+
+exit
+;aspetto che l'elicottero_002 raggiunga la posizione trigger_002_elicotterowp1
+#aspettaelicotterowp1
+
+
+;quando l'elicottero_002 ha raggiunto il trigger_002_elicotterowp1, da editor si imposta la variabile wp1_002=1. quindi quando wp1_002=1; muovi elicottero_002 al waypoint 2 (trigger_002_elicotterowp2)
+if (wp1_002==1) then {goto "rimozioneelicottero";};
+~1
+
+goto "aspettaelicotterowp1"
+
+#rimozioneelicottero
+
+
+;invia l'elicottero al wp successivo ed esegui lo script che rileva l'arrivo dell'elicottero a destinazione, dopodichè cancelli tutto e termini lo script
+_grppilota_002 move getpos trigger_002_elicotterowp2;
+[] exec "4thSOGCD_missions\mission002_ss002_eliminazioneelicottero.sqs";
+
+~3

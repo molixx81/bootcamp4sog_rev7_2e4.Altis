@@ -1,0 +1,136 @@
+;--------------------------------
+; Spawna 5 unità di fanteria semplice ribelli AI by Molixx
+;--------------------------------
+; esempio: ["spawn002",5,"_grpreb_1","WP_1","WP_2","WP_3","WP_4","WP_5","COLUMN"] exec "spawn_5xAI.sqs";     
+; "spawn002" = spawno le unità al marker x (mettere il nome del marker tra virgolette)
+; 5 = n° unità da spawnare per gruppo
+; _grpreb_1 = nome del gruppo di ribelli
+; "WP_1" = nome del marker corrispondente al 1 waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_2" = nome del marker corrispondente al 2 waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_3" = nome del marker corrispondente al 3 waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_4" = nome del marker corrispondente al 4 waypoint. Ricordatevi di metterlo tra virgolette
+; "WP_5" = nome del marker corrispondente al 5 waypoint. Ricordatevi di metterlo tra virgolette
+; "COLUMN" = formazione del gruppo da scegliere tra "COLUMN" - "STAG COLUMN" - "WEDGE" - "ECH LEFT" - "ECH RIGHT" - "VEE" - "LINE" - "FILE" (ArmA) - "DIAMOND" (ArmA)
+
+
+;--------------------------------
+;--------------------------------
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawnpos = _this select 0;
+	_nunita = _this select 1;
+	_grp = _this select 2;
+	_WP1 = _this select 3;
+	_WP2 = _this select 4;
+	_WP3 = _this select 5;
+	_WP4 = _this select 6;
+	_WP5 = _this select 7;
+	_formation = _this select 8;
+
+;---------------------------------------
+; Creo le unità
+;---------------------------------------	
+	_grp = createGroup EAST;   
+	_rebgunner_001 = _grp createUnit ["LOP_BH_Infantry_Rifleman",getmarkerpos _spawnpos,[],10,"FORM"]; 
+	_rebgunner_002 = _grp createUnit ["LOP_BH_Infantry_AR_Asst",getmarkerpos _spawnpos,[],10,"FORM"]; 
+	_rebgunner_003 = _grp createUnit ["LOP_BH_Infantry_AT",getmarkerpos _spawnpos,[],10,"FORM"]; 
+	_rebgunner_004 = _grp createUnit ["LOP_BH_Infantry_AR",getmarkerpos _spawnpos,[],10,"FORM"]; 
+	_rebgunner_005 = _grp createUnit ["LOP_BH_Infantry_Corpsman",getmarkerpos _spawnpos,[],10,"FORM"]; 
+
+[_rebgunner_002, _rebgunner_003,_rebgunner_004,_rebgunner_005] join _rebgunner_001;
+_grp setFormation _formation;
+
+;---------------------------------------
+; setto le skill per le AI spawnate
+;---------------------------------------
+_rebgunner_001 setskill ["aimingAccuracy",0.65];
+_rebgunner_001 setskill ["aimingShake",1];
+_rebgunner_001 setskill ["aimingSpeed",1]; 
+_rebgunner_001 setskill ["endurance",1];
+_rebgunner_001 setskill ["spotDistance",1];
+_rebgunner_001 setskill ["spotTime",1];
+_rebgunner_001 setskill ["courage",1];
+_rebgunner_001 setskill ["reloadSpeed",1];
+_rebgunner_001 setskill ["commanding",1];
+_rebgunner_001 setcombatmode "RED";
+_rebgunner_001 setBehaviour "AWARE";
+
+_rebgunner_002 setskill ["aimingAccuracy",0.65];
+_rebgunner_002 setskill ["aimingShake",1];
+_rebgunner_002 setskill ["aimingSpeed",1]; 
+_rebgunner_002 setskill ["endurance",1];
+_rebgunner_002 setskill ["spotDistance",1];
+_rebgunner_002 setskill ["spotTime",1];
+_rebgunner_002 setskill ["courage",1];
+_rebgunner_002 setskill ["reloadSpeed",1];
+_rebgunner_002 setskill ["commanding",1];
+_rebgunner_002 setcombatmode "RED";
+_rebgunner_002 setBehaviour "AWARE";
+
+_rebgunner_003 setskill ["aimingAccuracy",0.65];
+_rebgunner_003 setskill ["aimingShake",1];
+_rebgunner_003 setskill ["aimingSpeed",1]; 
+_rebgunner_003 setskill ["endurance",1];
+_rebgunner_003 setskill ["spotDistance",1];
+_rebgunner_003 setskill ["spotTime",1];
+_rebgunner_003 setskill ["courage",1];
+_rebgunner_003 setskill ["reloadSpeed",1];
+_rebgunner_003 setskill ["commanding",1];
+_rebgunner_003 setcombatmode "RED";
+_rebgunner_003 setBehaviour "AWARE";
+
+_rebgunner_004 setskill ["aimingAccuracy",0.65];
+_rebgunner_004 setskill ["aimingShake",1];
+_rebgunner_004 setskill ["aimingSpeed",1]; 
+_rebgunner_004 setskill ["endurance",1];
+_rebgunner_004 setskill ["spotDistance",1];
+_rebgunner_004 setskill ["spotTime",1];
+_rebgunner_004 setskill ["courage",1];
+_rebgunner_004 setskill ["reloadSpeed",1];
+_rebgunner_004 setskill ["commanding",1];
+_rebgunner_004 setcombatmode "RED";
+_rebgunner_004 setBehaviour "AWARE";
+
+_rebgunner_005 setskill ["aimingAccuracy",0.65];
+_rebgunner_005 setskill ["aimingShake",1];
+_rebgunner_005 setskill ["aimingSpeed",1]; 
+_rebgunner_005 setskill ["endurance",1];
+_rebgunner_005 setskill ["spotDistance",1];
+_rebgunner_005 setskill ["spotTime",1];
+_rebgunner_005 setskill ["courage",1];
+_rebgunner_005 setskill ["reloadSpeed",1];
+_rebgunner_005 setskill ["commanding",1];
+_rebgunner_005 setcombatmode "RED";
+_rebgunner_005 setBehaviour "AWARE";
+
+;---------------------------------------
+;imposto i waypoint del gruppo
+;---------------------------------------
+_waypoint1 = _grp addWaypoint [getmarkerpos _WP1, 0];
+_waypoint1 setWaypointType "MOVE";
+_waypoint1 setWaypointSpeed "LIMITED";
+;_waypoint setWaypointBehaviour "SAFE";
+;_waypoint setWaypointType "FOLLOW";
+
+_waypoint2 = _grp addWaypoint [getmarkerpos _WP2, 0];
+_waypoint2 setWaypointType "MOVE";
+;_waypoint2 setWaypointSpeed "LIMITED";
+
+_waypoint3 = _grp addWaypoint [getmarkerpos _WP3, 0];
+_waypoint3 setWaypointType "MOVE";
+;_waypoint3 setWaypointSpeed "LIMITED";
+
+_waypoint4 = _grp addWaypoint [getmarkerpos _WP4, 0];
+_waypoint4 setWaypointType "MOVE";
+;_waypoint4 setWaypointSpeed "LIMITED";
+;_waypoint4 setWaypointStatements ["true", "hint 'cicla'"];
+
+_waypoint5 = _grp addWaypoint [getmarkerpos _WP5, 0];
+_waypoint5 setWaypointType "CYCLE";
+
+
+
+
+exit

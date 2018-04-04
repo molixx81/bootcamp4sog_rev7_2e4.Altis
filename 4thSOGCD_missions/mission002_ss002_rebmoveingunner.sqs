@@ -1,0 +1,16 @@
+;-------------------------
+;mission002_ss002_rebmoveingunner
+;sposto il gunner sulla tecnica
+;-------------------------
+
+#loop
+if (triggerActivated trigger_002_tecnica) then {rebgunner_002 assignAsGunner tecnica002; [rebgunner_002] orderGetIn true; goto "endscript"; };
+
+~1
+
+goto "loop";
+
+
+#endscript
+
+exit

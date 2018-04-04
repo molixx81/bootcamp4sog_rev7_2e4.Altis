@@ -1,0 +1,387 @@
+;--------------------------------
+; Spawna un elicottero per rilasciare N unità atterrando by Molixx
+; Ordina successivamente alle unità rilasciate di seguire 5 Marker (4 di direzione 1 di waypoint ciclico)
+; Rev. 2.0 del 04/04/2018
+;
+; ATTENZIONE! Per spawnare più elicotteri contemporaneamente, utilizzare per ognuno, una copia diversa dello script e cambiare il nome da "elicottero_1" a "elicottero_2" e cosi via
+;             Ricorsarsi poi di fare lo stesso per la variabile trasportoVAR_1 (trasportoVAR_1, trasportoVAR_2 e cosi via)
+;--------------------------------
+
+;creo la variabile trasportoVAR_1 = 0. Se = 1 elimina tutto il gruppo (unità trasportate + gunner + pilota + elicottero)  ---- se non c'è la necessità di cancellare più elicotteri contemporaneamente, ricordarsi di cambiare questa variabile per ogni elicottero spawnato (se ci sono più elicotteri contemporaneamente)
+trasportoVAR_1 = 0;
+
+
+;--------------------------------
+; esempio: ["spawn","rilascio","class",8,"grpassalto","LINE","wp_1","wp_2","wp_3","wp_4","wp_5",1] exec "4thSOGCD_script\script_RUS_elicottero_rilascio.sqs";     
+; "spawn"       = nome del marker sulla quale spawno l'elicottero
+; "rilascio"    = nome del marker sulla quale l'elicottero atterra per scaricare le unità 
+; "class"       = classe dell'elicottero utilizzato come trasporto. Utilizzare SOLAMENTE veicoli dell' EAST!!!!
+; 8             = numero delle unità trasportate (da 1 fino a 12, le classi sono impostate all'interno di questo script e controllate la capacità max dell'elicottero prima, altrimenti le unità in eccesso rimangono a piedi)
+; "grp"         = nome del gruppo scaricato dall'elicottero, serve per dare gli ordini ed eventualmente per la cancellazione
+; "WP_1"        = nome del marker sulla mappa corrispondente al 1° waypoint che le unità scaricate percorreranno
+; "WP_2"        = nome del marker sulla mappa corrispondente al 2° waypoint che le unità scaricate percorreranno
+; "WP_3"        = nome del marker sulla mappa corrispondente al 3° waypoint che le unità scaricate percorreranno
+; "WP_4"        = nome del marker sulla mappa corrispondente al 4° waypoint che le unità scaricate percorreranno
+; "WP_5"        = nome del marker sulla mappa corrispondente al 5° waypoint che le unità scaricate percorreranno
+; 2             = da quanti membri dell'equipaggio è composto l'elicottero? Opzioni: 0 (nessun mitragliere) 1 (un mitragliere) 2 (due mitraglieri). Un valore differente da 0,1,2 non spawna alcun mitragliere
+;--------------------------------
+
+
+;---------------------------------------
+; Prelevo le variabili dall'exec
+;---------------------------------------
+	_spawn = _this select 0;
+	_rilascio = _this select 1;
+	_heliclass = _this select 2;
+	_nunita = _this select 3;
+	_grp = _this select 4;
+	_formation = _this select 5;
+	_WP1 = _this select 6;
+	_WP2 = _this select 7;
+	_WP3 = _this select 8;
+	_WP4 = _this select 9;
+	_WP5 = _this select 10;
+	membri = _this select 11;
+
+
+;---------------------------------------
+; Imposto le classi negli slots delle unità trasportate
+;---------------------------------------
+	_slot1 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot2 = "rhs_vdv_mflora_machinegunner";
+	_slot3 = "rhs_vdv_mflora_grenadier_rpg";
+	_slot4 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot5 = "rhs_vdv_mflora_medic";
+	_slot6 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot7 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot8 = "rhs_vdv_mflora_machinegunner_assistant";
+	_slot9 = "rhs_vdv_mflora_machinegunner";
+	_slot10 = "rhs_vdv_mflora_grenadier_rpg";
+	_slot11 = "rhs_vdv_mflora_grenadier";
+	_slot12 = "rhs_vdv_mflora_marksman";
+
+
+;---------------------------------------
+; Creo l'elicottero e il suo equipaggio 
+;---------------------------------------
+	elicottero_1 = createVehicle [_heliclass, getMarkerPos _spawn,[],0,"FLY"];
+	elicottero_1 setPos [getPos elicottero_1  select 0, getPos elicottero_1  select 1, 50];
+
+	_grppilota = createGroup EAST;   
+
+	_pilota = _grppilota createUnit ["rhsusf_army_ucp_helicrew",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_pilota moveindriver elicottero_1;
+	if (membri==0) then {goto "proprieta"};
+
+	_grpgunner = createGroup EAST;   
+	_gunner1 = _grpgunner createUnit ["rhsusf_army_ucp_helicrew",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_gunner1 moveingunner elicottero_1;
+	if (membri==1) then {goto "proprieta"};
+
+	_gunner2 = _grpgunner createUnit ["rhsusf_army_ucp_helicrew",(getmarkerpos _spawn ),[],0,"NONE"];   
+	_gunner2 moveingunner elicottero_1;
+
+
+#proprieta
+;---------------------------------------
+; Imposto le proprietà dei membri dell'elicottero
+;---------------------------------------
+	_grppilota setBehaviour "CARELESS";
+	_pilota setcaptive true;
+	if (membri==0) then {goto "creareunita"};
+
+	_gunner1 setskill ["aimingAccuracy",0.65];
+	_gunner1 setskill ["aimingShake",1];
+	_gunner1 setskill ["aimingSpeed",1]; 
+	_gunner1 setskill ["endurance",1];
+	_gunner1 setskill ["spotDistance",1];
+	_gunner1 setskill ["spotTime",1];
+	_gunner1 setskill ["courage",1];
+	_gunner1 setskill ["reloadSpeed",1];
+	_gunner1 setskill ["commanding",1];
+	_gunner1 setcombatmode "RED";
+	_gunner1 setBehaviour "AWARE";
+	_gunner1 setcaptive true;
+	if (membri==1) then {goto "creareunita"};
+
+	_gunner2 setskill ["aimingAccuracy",0.65];
+	_gunner2 setskill ["aimingShake",1];
+	_gunner2 setskill ["aimingSpeed",1]; 
+	_gunner2 setskill ["endurance",1];
+	_gunner2 setskill ["spotDistance",1];
+	_gunner2 setskill ["spotTime",1];
+	_gunner2 setskill ["courage",1];
+	_gunner2 setskill ["reloadSpeed",1];
+	_gunner2 setskill ["commanding",1];
+	_gunner2 setcombatmode "RED";
+	_gunner2 setBehaviour "AWARE";
+	_gunner2 setcaptive true;
+
+
+#creareunita
+;---------------------------------------
+; Creo le unità trasportate e ne imposto le catatteristiche
+;---------------------------------------	
+	_grp = createGroup EAST;   
+
+	_rusgunner_001 = _grp createUnit [_slot1,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_001 moveincargo elicottero_1;
+	_rusgunner_001 setskill ["aimingAccuracy",0.65];
+	_rusgunner_001 setskill ["aimingShake",1];
+	_rusgunner_001 setskill ["aimingSpeed",1]; 
+	_rusgunner_001 setskill ["endurance",1];
+	_rusgunner_001 setskill ["spotDistance",1];
+	_rusgunner_001 setskill ["spotTime",1];
+	_rusgunner_001 setskill ["courage",1];
+	_rusgunner_001 setskill ["reloadSpeed",1];
+	_rusgunner_001 setskill ["commanding",1];
+	_rusgunner_001 setcombatmode "RED";
+	_rusgunner_001 setBehaviour "AWARE";
+	if (_nunita==1) then {goto "formazione"};
+
+	_rusgunner_002 = _grp createUnit [_slot2,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_002 moveincargo elicottero_1;
+	[_rusgunner_002] join _rusgunner_001;
+	_rusgunner_002 setskill ["aimingAccuracy",0.65];
+	_rusgunner_002 setskill ["aimingShake",1];
+	_rusgunner_002 setskill ["aimingSpeed",1]; 
+	_rusgunner_002 setskill ["endurance",1];
+	_rusgunner_002 setskill ["spotDistance",1];
+	_rusgunner_002 setskill ["spotTime",1];
+	_rusgunner_002 setskill ["courage",1];
+	_rusgunner_002 setskill ["reloadSpeed",1];
+	_rusgunner_002 setskill ["commanding",1];
+	_rusgunner_002 setcombatmode "RED";
+	_rusgunner_002 setBehaviour "AWARE";
+	if (_nunita==2) then {goto "formazione"};
+
+	_rusgunner_003 = _grp createUnit [_slot3,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_003 moveincargo elicottero_1;
+	[_rusgunner_003] join _rusgunner_001;
+	_rusgunner_003 setskill ["aimingAccuracy",0.65];
+	_rusgunner_003 setskill ["aimingShake",1];
+	_rusgunner_003 setskill ["aimingSpeed",1]; 
+	_rusgunner_003 setskill ["endurance",1];
+	_rusgunner_003 setskill ["spotDistance",1];
+	_rusgunner_003 setskill ["spotTime",1];
+	_rusgunner_003 setskill ["courage",1];
+	_rusgunner_003 setskill ["reloadSpeed",1];
+	_rusgunner_003 setskill ["commanding",1];
+	_rusgunner_003 setcombatmode "RED";
+	_rusgunner_003 setBehaviour "AWARE";
+	if (_nunita==3) then {goto "formazione"};
+
+	_rusgunner_004 = _grp createUnit [_slot4,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_004 moveincargo elicottero_1;
+	[_rusgunner_004] join _rusgunner_001;
+	_rusgunner_004 setskill ["aimingAccuracy",0.65];
+	_rusgunner_004 setskill ["aimingShake",1];
+	_rusgunner_004 setskill ["aimingSpeed",1]; 
+	_rusgunner_004 setskill ["endurance",1];
+	_rusgunner_004 setskill ["spotDistance",1];
+	_rusgunner_004 setskill ["spotTime",1];
+	_rusgunner_004 setskill ["courage",1];
+	_rusgunner_004 setskill ["reloadSpeed",1];
+	_rusgunner_004 setskill ["commanding",1];
+	_rusgunner_004 setcombatmode "RED";
+	_rusgunner_004 setBehaviour "AWARE";
+	if (_nunita==4) then {goto "formazione"};
+
+	_rusgunner_005 = _grp createUnit [_slot5,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_005 moveincargo elicottero_1;
+	[_rusgunner_005] join _rusgunner_001;
+	_rusgunner_005 setskill ["aimingAccuracy",0.65];
+	_rusgunner_005 setskill ["aimingShake",1];
+	_rusgunner_005 setskill ["aimingSpeed",1]; 
+	_rusgunner_005 setskill ["endurance",1];
+	_rusgunner_005 setskill ["spotDistance",1];
+	_rusgunner_005 setskill ["spotTime",1];
+	_rusgunner_005 setskill ["courage",1];
+	_rusgunner_005 setskill ["reloadSpeed",1];
+	_rusgunner_005 setskill ["commanding",1];
+	_rusgunner_005 setcombatmode "RED";
+	_rusgunner_005 setBehaviour "AWARE";
+	if (_nunita==5) then {goto "formazione"};
+
+	_rusgunner_006 = _grp createUnit [_slot6,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_006 moveincargo elicottero_1;
+	[_rusgunner_006] join _rusgunner_001;
+	_rusgunner_006 setskill ["aimingAccuracy",0.65];
+	_rusgunner_006 setskill ["aimingShake",1];
+	_rusgunner_006 setskill ["aimingSpeed",1]; 
+	_rusgunner_006 setskill ["endurance",1];
+	_rusgunner_006 setskill ["spotDistance",1];
+	_rusgunner_006 setskill ["spotTime",1];
+	_rusgunner_006 setskill ["courage",1];
+	_rusgunner_006 setskill ["reloadSpeed",1];
+	_rusgunner_006 setskill ["commanding",1];
+	_rusgunner_006 setcombatmode "RED";
+	_rusgunner_006 setBehaviour "AWARE";
+	if (_nunita==6) then {goto "formazione"};
+
+	_rusgunner_007 = _grp createUnit [_slot7,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_007 moveincargo elicottero_1;
+	[_rusgunner_007] join _rusgunner_001;
+	_rusgunner_007 setskill ["aimingAccuracy",0.65];
+	_rusgunner_007 setskill ["aimingShake",1];
+	_rusgunner_007 setskill ["aimingSpeed",1]; 
+	_rusgunner_007 setskill ["endurance",1];
+	_rusgunner_007 setskill ["spotDistance",1];
+	_rusgunner_007 setskill ["spotTime",1];
+	_rusgunner_007 setskill ["courage",1];
+	_rusgunner_007 setskill ["reloadSpeed",1];
+	_rusgunner_007 setskill ["commanding",1];
+	_rusgunner_007 setcombatmode "RED";
+	_rusgunner_007 setBehaviour "AWARE";
+	if (_nunita==7) then {goto "formazione"};
+
+	_rusgunner_008 = _grp createUnit [_slot8,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_008 moveincargo elicottero_1;
+	[_rusgunner_008] join _rusgunner_001;
+	_rusgunner_008 setskill ["aimingAccuracy",0.65];
+	_rusgunner_008 setskill ["aimingShake",1];
+	_rusgunner_008 setskill ["aimingSpeed",1]; 
+	_rusgunner_008 setskill ["endurance",1];
+	_rusgunner_008 setskill ["spotDistance",1];
+	_rusgunner_008 setskill ["spotTime",1];
+	_rusgunner_008 setskill ["courage",1];
+	_rusgunner_008 setskill ["reloadSpeed",1];
+	_rusgunner_008 setskill ["commanding",1];
+	_rusgunner_008 setcombatmode "RED";
+	_rusgunner_008 setBehaviour "AWARE";
+	if (_nunita==8) then {goto "formazione"};
+
+	_rusgunner_009 = _grp createUnit [_slot9,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_009 moveincargo elicottero_1;
+	[_rusgunner_009] join _rusgunner_001;
+	_rusgunner_009 setskill ["aimingAccuracy",0.65];
+	_rusgunner_009 setskill ["aimingShake",1];
+	_rusgunner_009 setskill ["aimingSpeed",1]; 
+	_rusgunner_009 setskill ["endurance",1];
+	_rusgunner_009 setskill ["spotDistance",1];
+	_rusgunner_009 setskill ["spotTime",1];
+	_rusgunner_009 setskill ["courage",1];
+	_rusgunner_009 setskill ["reloadSpeed",1];
+	_rusgunner_009 setskill ["commanding",1];
+	_rusgunner_009 setcombatmode "RED";
+	_rusgunner_009 setBehaviour "AWARE";
+	if (_nunita==9) then {goto "formazione"};
+
+	_rusgunner_010 = _grp createUnit [_slot10,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_010 moveincargo elicottero_1;
+	[_rusgunner_010] join _rusgunner_001;
+	_rusgunner_010 setskill ["aimingAccuracy",0.65];
+	_rusgunner_010 setskill ["aimingShake",1];
+	_rusgunner_010 setskill ["aimingSpeed",1]; 
+	_rusgunner_010 setskill ["endurance",1];
+	_rusgunner_010 setskill ["spotDistance",1];
+	_rusgunner_010 setskill ["spotTime",1];
+	_rusgunner_010 setskill ["courage",1];
+	_rusgunner_010 setskill ["reloadSpeed",1];
+	_rusgunner_010 setskill ["commanding",1];
+	_rusgunner_010 setcombatmode "RED";
+	_rusgunner_010 setBehaviour "AWARE";
+	if (_nunita==10) then {goto "formazione"};
+
+	_rusgunner_011 = _grp createUnit [_slot11,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_011 moveincargo elicottero_1;
+	[_rusgunner_011] join _rusgunner_001;
+	_rusgunner_011 setskill ["aimingAccuracy",0.65];
+	_rusgunner_011 setskill ["aimingShake",1];
+	_rusgunner_011 setskill ["aimingSpeed",1]; 
+	_rusgunner_011 setskill ["endurance",1];
+	_rusgunner_011 setskill ["spotDistance",1];
+	_rusgunner_011 setskill ["spotTime",1];
+	_rusgunner_011 setskill ["courage",1];
+	_rusgunner_011 setskill ["reloadSpeed",1];
+	_rusgunner_011 setskill ["commanding",1];
+	_rusgunner_011 setcombatmode "RED";
+	_rusgunner_011 setBehaviour "AWARE";
+	if (_nunita==11) then {goto "formazione"};
+
+	_rusgunner_012 = _grp createUnit [_slot12,getmarkerpos _spawn,[],10,"FORM"]; 
+	_rusgunner_012 moveincargo elicottero_1;
+	[_rusgunner_012] join _rusgunner_001;
+	_rusgunner_012 setskill ["aimingAccuracy",0.65];
+	_rusgunner_012 setskill ["aimingShake",1];
+	_rusgunner_012 setskill ["aimingSpeed",1]; 
+	_rusgunner_012 setskill ["endurance",1];
+	_rusgunner_012 setskill ["spotDistance",1];
+	_rusgunner_012 setskill ["spotTime",1];
+	_rusgunner_012 setskill ["courage",1];
+	_rusgunner_012 setskill ["reloadSpeed",1];
+	_rusgunner_012 setskill ["commanding",1];
+	_rusgunner_012 setcombatmode "RED";
+	_rusgunner_012 setBehaviour "AWARE";
+
+
+
+#formazione
+;---------------------------------------
+; setto le skill per le AI spawnate
+;---------------------------------------
+	_grp setFormation _formation;
+
+
+;---------------------------------------
+; imposto il waypoint dell'elicottero: Scarica le unità
+;---------------------------------------
+	_waypointeli1 = _grppilota addWaypoint [getmarkerpos _rilascio, 0];
+	_waypointeli1 setWaypointType "TR UNLOAD";
+	;_waypointeli1 setWaypointSpeed "LIMITED";
+
+
+;---------------------------------------
+; imposto il waypoint di rientro dell'elicottero, quello in cui verrà eliminato
+;---------------------------------------
+	_waypointeli2 = _grppilota addWaypoint [getmarkerpos _spawn, 0];
+	_waypointeli2 setWaypointType "MOVE";
+	;_waypointeli2 setWaypointSpeed "LIMITED";
+	_waypointeli2 setWaypointStatements ["true", "{deleteVehicle _x} forEach crew elicottero_1; deletevehicle elicottero_1;"];
+
+
+#waypoint
+;---------------------------------------
+; imposto i waypoint del gruppo trasportato
+;---------------------------------------
+	_waypoint0 = _grp addWaypoint [getmarkerpos _rilascio, 0];
+	_waypoint0 setWaypointType "GETOUT";
+	;_waypoint0 setWaypointSpeed "LIMITED";
+
+	_waypoint1 = _grp addWaypoint [getmarkerpos _WP1, 0];
+	_waypoint1 setWaypointType "MOVE";
+	;_waypoint1 setWaypointSpeed "LIMITED";
+	;_waypoint setWaypointBehaviour "SAFE";
+	;_waypoint setWaypointType "FOLLOW";
+
+	_waypoint2 = _grp addWaypoint [getmarkerpos _WP2, 0];
+	_waypoint2 setWaypointType "MOVE";
+	;_waypoint2 setWaypointSpeed "LIMITED";
+
+	_waypoint3 = _grp addWaypoint [getmarkerpos _WP3, 0];
+	_waypoint3 setWaypointType "MOVE";
+	;_waypoint3 setWaypointSpeed "LIMITED";
+
+	_waypoint4 = _grp addWaypoint [getmarkerpos _WP4, 0];
+	_waypoint4 setWaypointType "MOVE";
+	;_waypoint4 setWaypointSpeed "LIMITED";
+	;_waypoint4 setWaypointStatements ["true", "hint 'cicla'"];
+
+	_waypoint5 = _grp addWaypoint [getmarkerpos _WP5, 0];
+	_waypoint5 setWaypointType "CYCLE";
+
+
+#eliminazione
+;---------------------------------------
+; rimango in attesa della variabile per l'eliminazione delle unità (trasportoVAR_1 = 1;)
+;---------------------------------------
+if (trasportoVAR_1 == 1) then {{ deleteVehicle _x }forEach units _grp; {deleteVehicle _x }forEach units _grppilota; {deleteVehicle _x }forEach units _grpgunner; deletevehicle elicottero_1; goto "exit";};
+~5
+goto "eliminazione";
+
+
+#exit
+;---------------------------------------
+; esco dallo script
+;---------------------------------------
+exit

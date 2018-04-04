@@ -1,0 +1,144 @@
+;-----------------------------------------------
+; 4thSOG Script per Combattimento Dinamico by Ricky & Molixx
+; inizializzazione_client.sqs
+; For info visit US @ 4sog.it
+; REV 1.0
+;-----------------------------------------------
+
+if (isServer) then {goto "end"};
+
+
+;imposto il messaggio di avvio 4th SOGCD
+hint "4thSOG Combattimento Dinamico avviato";
+
+; imposto la variabile parlato che riceverò dal server, cosi chi joina successivamente non si ritrova un parlato di troppo
+variabile_parlato = 0;
+
+
+; ricevo il parlato dal server per le missioni (variabile_parlato)
+; se 0 non parli
+; se 1 scrivi la frase 1
+; se 2 scrivi la frase 2
+; eccetera
+
+
+
+#reset
+variabile_parlato = 0;
+;publicVariable "variabile_parlato"; ;****************************** verificare se rendere pubblico il valore 0
+
+#loop
+if (variabile_parlato == 1) then {goto "parlato1"};
+if (variabile_parlato == 2) then {goto "parlato2"};
+if (variabile_parlato == 3) then {goto "parlato3"};
+if (variabile_parlato == 4) then {goto "parlato4"};
+if (variabile_parlato == 5) then {goto "parlato5"};
+if (variabile_parlato == 6) then {goto "parlato6"};
+if (variabile_parlato == 7) then {goto "parlato7"};
+if (variabile_parlato == 8) then {goto "parlato8"};
+if (variabile_parlato == 9) then {goto "parlato9"};
+if (variabile_parlato == 10) then {goto "parlato10"};
+if (variabile_parlato == 11) then {goto "parlato11"};
+if (variabile_parlato == 12) then {goto "parlato12"};
+if (variabile_parlato == 13) then {goto "parlato13"};
+if (variabile_parlato == 14) then {goto "parlato14"};
+if (variabile_parlato == 15) then {goto "parlato15"};
+if (variabile_parlato == 16) then {goto "parlato16"};
+if (variabile_parlato == 17) then {goto "parlato17"};
+
+~1
+goto "loop";
+
+
+#parlato1
+[west, "Base"] sideChat "Avete fallito la missione, ritornate in base";
+goto "reset";
+
+#parlato2
+[west, "Base"] sideChat "Ottimo lavoro squadra, avete portato a termine l'obiettivo!";
+~1
+[west, "Base"] sideChat "Vi aspettiamo in base. Chiudo";
+~30
+[west, "Base"] sideChat "Squadra contrordine: ci informano che abbiamo perso il contatto con la squadra Delta.";
+~2
+[west, "Base"] sideChat "Rimanete in attesa fino ad ulteriori istruzioni. Nel frattempo riorganizzatevi.";
+~90
+[west, "Base"] sideChat "La squadra Delta stava trasportando carburante alla FOB Golf quando ad un certo punto si sono perse le tracce";
+~2
+[west, "Base"] sideChat "Vi indico sulla mappa il loro vettore. Procedete in senso contrario e aggiornateci sulla situazione.";
+goto "reset";
+
+#parlato3
+[west, "Base"] sideChat "Squadre occhi aperti, siete in piena area di guerra!";
+goto "reset";
+
+
+#parlato4
+[west, "Base"] sideChat "Dovete riportare sano e salvo quel carico di carburante alla FOB Golf";
+goto "reset";
+
+#parlato5
+[west, "Base"] sideChat "Complimenti! Avete fatto un ottimo lavoro!";
+~1
+[west, "Base"] sideChat "Vi attendiamo in base! Passo e chiudo";
+goto "reset";
+
+#parlato6
+[west, "Base"] sideChat "Avete fallito l'ultima parte della missione... Recuperate tutte le vostre cose e tornate in base!.";
+goto "endscript";
+goto "reset";
+
+#parlato7
+[west, "Base"] sideChat "Squadra abbiamo un imprevisto. Sembra che nella città di Lakka ci sia una incursione da parte dei ribelli locali.";
+~2
+[west, "Base"] sideChat "Il percorso sulla strada è tangente alla citta' per cui il contatto e' inevitabile.. ";
+~2
+[west, "Base"] sideChat "Eliminate la resistenza e tenete al sicuro le munizioni che state trasportando, non devono cadere nelle mani dei ribelli!";
+goto "reset";
+
+#parlato8
+[west, "Base"] sideChat "Ottimo lavoro squadra! Ora riprendete la consegna delle munizioni alla FOB Golf";
+goto "reset";
+
+#parlato9
+[west, "Base"] sideChat "Ok, avete un IED davanti, attendete sulla strada fino ad ulteriori istruzioni. Passo";
+goto "reset";
+
+#parlato10
+[west, "Base"] sideChat "Squadra tutto bene? Siete passati sopra un IED. Mantenete la posizione fino ad ulteriori ordini.";
+goto "reset";
+
+#parlato11
+[west, "Base"] sideChat "Stiamo deviando il vettore di Cobra 2 sulla vostra area. Rimanete ancora in attesa. Passo";
+goto "reset";
+
+#parlato12
+hint "sistemare";
+[west, "Base"] sideChat "Cobra 2 rileva tracce termiche di persone a 083159 e 086154 insieme ad una tecnica. Zona civile, supporto negato!";
+goto "reset";
+
+#parlato13
+[west, "Base"] sideChat "Queste persone possono essere collegate all'IED sulla strada.";
+goto "reset";
+
+#parlato14
+[west, "Base"] sideChat "Avete l'ordine di investigare ed eliminare eventualmente qualsiasi minaccia";
+goto "reset";
+
+#parlato15
+[west, "Base"] sideChat "Badate al trasporto, non dimenticate che rimane il vostro obiettivo principale. Passo e chiudo";
+goto "reset";
+
+#parlato16
+[west, "Base"] sideChat "Bene squadra vi vediamo in movimento. Rimanete sulla strada indicata. Chiudo.";
+goto "reset";
+
+#parlato17
+[west, "Base"] sideChat "Bene squadra avete ritrovato il controllo remoto dell'IED. Assicuratevi che l'operatore sia morto e che non abbia con se altri dispositivi di comando.";
+goto "reset";
+
+
+
+
+#end
+exit

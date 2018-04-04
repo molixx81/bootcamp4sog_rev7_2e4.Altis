@@ -1,0 +1,20 @@
+;-----------------------------------------------
+;mission002_ss002_eliminazioneelicottero.sqs
+;verifica la presenza di elicottero nel wp2 ed elimina pilota ed elicottero
+;-----------------------------------------------
+
+;imposto la variabile che arriverà dall'editor
+wp2_002=0;
+
+#loop
+;se l'elicottero raggiunge wp2, dall'editor arriva la variabile wp2_002==1
+
+if (wp2_002==1) then {goto "eliminazione"};
+
+~20
+goto "loop";
+
+#eliminazione
+deletevehicle elicottero_002;
+deletevehicle pilota_002;
+exit

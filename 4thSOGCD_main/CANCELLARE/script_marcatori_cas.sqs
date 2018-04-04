@@ -1,0 +1,50 @@
+;------------------------------
+; Marcatori per tracciare i veicoli DI SUPPORTO - molix
+;------------------------------
+
+
+;-------------------------------------
+;creo i marcatori per Trasporto CH_1 (Quercia1), Trasporto UH_1 (Airone1), AH_1 (Cobra1),
+;-------------------------------------
+
+
+;********************settare posizione del mkrCH_1
+;********************settare posizione del mkrCH_1
+
+_markerCH_1 = createMarker ["mkrCH_1", getpos CH_1];
+"mkrCH_1" setMarkerText "Quercia 1";
+"mkrCH_1" setMarkerType "b_air";
+
+;********************settare posizione del mkrUH_1
+;********************settare posizione del mkrUH_1
+
+_markerUH_1 = createMarker ["mkrUH_1", getpos UH_1];
+"mkrUH_1" setMarkerText "Airone 1";
+"mkrUH_1" setMarkerType "b_air";
+
+;********************settare posizione del mkrAH_1
+;********************settare posizione del mkrAH_1
+
+_markerAH_1 = createMarker ["mkrAH_1", getpos AH_1];
+"mkrAH_1" setMarkerText "Cobra 1";
+"mkrAH_1" setMarkerType "b_air";
+
+;inizio loop per aggiornare i marker
+#aggiornamarker
+
+;imposto la posizione ed il colore di mkrCH_1
+if (alive CH_1) then {"mkrCH_1" setMarkerColor "ColorBlue"; "mkrCH_1" setMarkerPos getPos CH_1;"mkrCH_1" setMarkerText "Quercia 1"};
+if !(alive CH_1) then {"mkrCH_1" setMarkerColor "ColorBrown";"mkrCH_1" setMarkerText "Quercia 1, ultimo contatto";};
+
+;imposto la posizione ed il colore di mkrUH_1
+if (alive UH_1) then {"mkrUH_1" setMarkerColor "ColorBlue"; "mkrUH_1" setMarkerPos getPos UH_1;"mkrUH_1" setMarkerText "Airone 1"};
+if !(alive UH_1) then {"mkrUH_1" setMarkerColor "ColorBrown";"mkrUH_1" setMarkerText "Airone 1, ultimo contatto";};
+
+;imposto la posizione ed il colore di mkrAH_1
+if (alive AH_1) then {"mkrAH_1" setMarkerColor "ColorBlue"; "mkrAH_1" setMarkerPos getPos AH_1;"mkrAH_1" setMarkerText "Cobra 1"};
+if !(alive AH_1) then {"mkrAH_1" setMarkerColor "ColorBrown";"mkrAH_1" setMarkerText "Cobra 1, ultimo contatto";};
+
+~2
+
+goto "aggiornamarker";
+
